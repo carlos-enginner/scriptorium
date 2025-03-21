@@ -1,11 +1,10 @@
-
 services:
-  app:
+  backend:
     image: hyperf/hyperf:8.1-alpine-v3.18-swoole
-    container_name: scriptorium_app
+    container_name: scriptorium_backend_app
     volumes:
       - ./backend:/var/www
-    working_dir: /var/www 
+    working_dir: /var/www
     ports:
       - "9501:9501"
     depends_on:
@@ -13,7 +12,23 @@ services:
       - cache
     command: [ "php", "/var/www/bin/hyperf.php", "server:watch" ]
     networks:
-    - scriptorium_network
+      - scriptorium_network
+
+  frontend:
+    container_name: scriptorium_frontend_app
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /frontend/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - scriptorium_network
+
   cache:
     image: redis:latest
     container_name: redis
@@ -37,16 +52,6 @@ services:
     volumes:
       - ./data/pg:/var/lib/postgresql/data
     networks:
-    - scriptorium_network
-
-  # frontend:
-  #   build: ./frontend
-  #   container_name: preact_frontend
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./frontend:/app
-  #   command: ["npm", "run", "dev"]
-
+      - scriptorium_network
 networks:
   scriptorium_network:
