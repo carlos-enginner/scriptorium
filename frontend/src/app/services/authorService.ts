@@ -8,7 +8,7 @@ export interface Author {
 export const fetchAuthors = async (): Promise<Author[]> => {
   const response = await api.get('/authors');
 
-  return Array.isArray(response.data) ? response.data : [];
+  return response.data.data || [];
 };
 
 export const fetchAuthorById = async (id: number): Promise<Author> => {
