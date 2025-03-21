@@ -1,29 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Book, fetchBooks, deleteBook } from "@/app/services/bookService";
-import { Search, Plus } from "lucide-react";
-
+import { Search, BookPlus, Edit, Trash } from "lucide-react";
 
 const BookSearch = () => {
   const [search, setSearch] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
   const [foundBook, setFoundBook] = useState<Book | null>(null);
-
-  useEffect(() => {
-    fetchBooks().then(setBooks);
-  }, []);
+  const [searched, setSearched] = useState(false);
 
   const handleSearch = async () => {
-    if (!search.trim()) {
-      setFoundBook(null);
-      fetchBooks().then(setBooks);
-      return;
-    }
+    if (search.trim().length === 0) return;
 
+    setSearched(true);
     const results = await fetchBooks(search);
+
     if (results.length === 1) {
-      setFoundBook(results[0]); // Se encontrar apenas um livro, exibe ele no card
+      setFoundBook(results[0]);
+      setBooks([]);
     } else {
       setFoundBook(null);
       setBooks(results);
@@ -31,52 +26,47 @@ const BookSearch = () => {
   };
 
   return (
-    <div>
-
-<div className="flex gap-2 mb-4 items-center">
-  <input
-    type="text"
-    placeholder="Buscar por título..."
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-    className="border p-2 rounded w-full"
-  />
-  
-  <button 
-    onClick={handleSearch} 
-    className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer w-[120px] flex items-center justify-center gap-2"
-  >
-    <Search size={16} /> Pesquisar
-  </button>
-
-  <a 
-    href="/books/new" 
-    className="bg-green-500 text-white px-4 py-2 rounded cursor-pointer w-[120px] flex items-center justify-center gap-2"
-  >
-    <Plus size={16} /> Adicionar
-  </a>
-</div>
-
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearch();
+        }}
+        className="bg-white shadow-md rounded-full flex items-center w-full max-w-2xl px-4 py-2"
+      >
+        <button
+          type="submit"
+          className="text-gray-500 hover:text-gray-700 transition"
+        >
+          <Search size={20} />
+        </button>
+        <input
+          type="text"
+          placeholder="Busca livro pelo nome"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full px-3 py-2 text-lg border-none outline-none bg-transparent"
+        />
+        <a
+          href="/books/new"
+          className="text-blue-500 hover:text-blue-600 transition flex items-center justify-center"
+        >
+          <BookPlus size={24} />
+        </a>
+      </form>
 
       {foundBook ? (
-        <div className="border rounded-lg p-4 shadow-md bg-white relative">
-          <h3 className="text-xl font-bold">{foundBook.title}</h3>
-          <p><strong>Editora:</strong> {foundBook.publisher}</p>
-          <p><strong>Edição:</strong> {foundBook.edition}</p>
-          <p><strong>Ano de Publicação:</strong> {foundBook.publication_year}</p>
-          <p><strong>Preço:</strong> R$ {(Number(foundBook.price) || 0).toFixed(2)}</p>
-          <p><strong>Autores:</strong> {foundBook?.authors.join(", ")}</p>
-          <p><strong>Assuntos:</strong> {foundBook?.subjects.join(", ")}</p>
+        <div className="bg-white shadow-lg rounded-lg p-6 mt-6 w-full max-w-2xl">
+          <h3 className="text-2xl font-semibold">{foundBook.title}</h3>
+          <p className="text-gray-600"><strong>Editora:</strong> {foundBook.publisher}</p>
+          <p className="text-gray-600"><strong>Edição:</strong> {foundBook.edition}</p>
+          <p className="text-gray-600"><strong>Ano:</strong> {foundBook.publication_year}</p>
+          <p className="text-gray-600"><strong>Preço:</strong> R$ {(Number(foundBook.price) || 0).toFixed(2)}</p>
 
-          {/* Links de Ação */}
-          <div className="mt-4 flex gap-2">
-            <a
-              href={`/books/edit/${foundBook.id}`}
-              className="bg-yellow-500 text-white px-4 py-2 rounded inline-block cursor-pointer"
-            >
-              Editar
+          <div className="flex justify-end mt-4 gap-4">
+            <a href={`/books/edit/${foundBook.id}`} className="text-blue-500 hover:text-blue-600 transition">
+              <Edit size={20} />
             </a>
-
             <a
               href="#"
               onClick={async (e) => {
@@ -86,54 +76,48 @@ const BookSearch = () => {
                   setFoundBook(null);
                 }
               }}
-              className="bg-red-500 text-white px-4 py-2 rounded inline-block cursor-pointer"
+              className="text-blue-500 hover:text-blue-600 transition"
             >
-              Excluir
+              <Trash size={20} />
             </a>
           </div>
         </div>
-      ) : (
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {books.map((book) => (
-            <li key={book.id} className="border rounded-lg p-4 shadow-md bg-white relative">
-              <h3 className="text-xl font-bold">{book.title}</h3>
-              <p><strong>Editora:</strong> {book.publisher}</p>
-              <p><strong>Edição:</strong> {book.edition}</p>
-              <p><strong>Ano de Publicação:</strong> {book.publication_year}</p>
-              <p><strong>Preço:</strong> R$ {(Number(book.price) || 0).toFixed(2)}</p>
-
-              {/* Links de Ação */}
-              <div className="mt-4 flex gap-2">
-                <a
-                  href={`/books/edit/${book.id}`}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded inline-block cursor-pointer"
-                >
-                  Editar
-                </a>
-
-                <a
-                  href="#"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    if (confirm("Tem certeza que deseja excluir este livro?")) {
-                      await deleteBook(book.id);
-                      setBooks(books.filter((b) => b.id !== book.id)); // Remove da listagem
-                    }
-                  }}
-                  className="bg-red-500 text-white px-4 py-2 rounded inline-block cursor-pointer"
-                >
-                  Excluir
-                </a>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
-
-
+      ) : books.length > 0 ? (
+        <div className="w-full max-w-2xl mt-6">
+          <ul className="bg-white shadow-lg rounded-lg p-4">
+            {books.map((book) => (
+              <li key={book.id} className="border-b last:border-none py-4 px-2 flex justify-between items-center">
+                <div>
+                  <h3 className="text-lg font-semibold">{book.title}</h3>
+                  <p className="text-gray-600"><strong>Editora:</strong> {book.publisher}</p>
+                </div>
+                <div className="flex gap-3">
+                  <a href={`/books/edit/${book.id}`} className="text-blue-500 hover:text-blue-600 transition">
+                    <Edit size={20} />
+                  </a>
+                  <a
+                    href="#"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      if (confirm("Tem certeza que deseja excluir este livro?")) {
+                        await deleteBook(book.id);
+                        setBooks(books.filter((b) => b.id !== book.id));
+                      }
+                    }}
+                    className="text-blue-500 hover:text-blue-600 transition"
+                  >
+                    <Trash size={20} />
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : searched ? (
+        <p className="text-gray-500 mt-6">Nenhum livro encontrado.</p>
+      ) : null}
     </div>
   );
 };
 
 export default BookSearch;
-

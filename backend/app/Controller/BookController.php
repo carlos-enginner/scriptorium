@@ -25,9 +25,19 @@ class BookController
     protected ResponseFactory $response;
 
     #[GetMapping(path: "books")]
-    public function index(): ResponseInterface
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
-        $books = $this->bookService->getAllBooks();
+        $queryParams = $request->getQueryParams();
+        $title = $queryParams['title'] ?? null;
+
+        $books = [];
+
+        if ($title) {
+            $books = $this->bookService->getBooksByTitle($title);
+        } else {
+            $books = $this->bookService->getAllBooks();
+        }
+
         return $this->response->json([
             'success' => true,
             'data' => $books

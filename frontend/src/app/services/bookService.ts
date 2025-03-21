@@ -11,10 +11,13 @@ export interface Book {
   price: number;
 }
 
-export const fetchBooks = async (): Promise<Book[]> => {
-  const response = await api.get("/books");
+export const fetchBooks = async (title?: string): Promise<Book[]> => {
+  const response = await api.get("/books", {
+    params: title ? { title } : {},
+  });
   return response.data?.data || [];
 };
+
 
 export const fetchBookById = async (id: number): Promise<Book> => {
   const response = await api.get(`/books/${id}`);

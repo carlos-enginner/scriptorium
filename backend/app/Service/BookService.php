@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Book;
 use App\Repository\BookAuthorRepository;
 use App\Repository\BookRepository;
 use App\Repository\BookSubjectRepository;
@@ -19,6 +20,11 @@ class BookService
     public function getAllBooks()
     {
         return $this->bookRepository->getAll();
+    }
+
+    public function getBooksByTitle(string $title)
+    {
+        return Book::where('title', 'ILIKE', "%{$title}%")->get();
     }
 
     public function getBookById(int $id)
