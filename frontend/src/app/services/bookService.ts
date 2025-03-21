@@ -12,7 +12,7 @@ export interface Book {
 
 export const fetchBooks = async (): Promise<Book[]> => {
   const response = await api.get("/books");
-  return response.data;
+  return Array.isArray(response.data) ? response.data : [];
 };
 
 export const fetchBookById = async (id: number): Promise<Book> => {

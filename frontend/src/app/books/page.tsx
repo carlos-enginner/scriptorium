@@ -76,7 +76,7 @@ const BookForm = ({ bookId }: BookFormProps) => {
       {/* Seleção de Autor */}
       <select value={book.author_id} onChange={(e) => setBook({ ...book, author_id: Number(e.target.value) })} className="w-full p-2 border rounded mb-2">
         <option value="">Selecione um Autor</option>
-        {authors.map((author) => (
+        {authors?.map((author) => (
           <option key={author.id} value={author.id}>
             {author.name}
           </option>
@@ -90,7 +90,7 @@ const BookForm = ({ bookId }: BookFormProps) => {
 
       {/* Seleção de Assuntos */}
       <select multiple value={book.subjects} onChange={(e) => setBook({ ...book, subjects: Array.from(e.target.selectedOptions, (option) => Number(option.value)) })} className="w-full p-2 border rounded mb-2">
-        {subjects.map((subject) => (
+        {subjects?.map((subject) => (
           <option key={subject.id} value={subject.id}>
             {subject.description}
           </option>
