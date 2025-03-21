@@ -12,7 +12,7 @@ export const fetchSubjects = async (): Promise<Subject[]> => {
 
 export const fetchSubjectById = async (id: number): Promise<Subject> => {
   const response = await api.get(`/subjects/${id}`);
-  return response.data;
+  return response.data?.data || [];
 };
 
 export const createSubject = async (subject: Subject) => {
