@@ -8,6 +8,8 @@ curl -X POST http://localhost:9501/books \
           "publisher": "Prentice Hall",
           "edition": 1,
           "publication_year": 2008
+          "authors": [2],
+          "subjects": [2,3]
         }'
 response: {"success":true,"data":{"title":"Clean Code","publisher":"Prentice Hall","edition":1,"publication_year":2008,"updated_at":"2025-03-21 14:57:25","created_at":"2025-03-21 14:57:25","id":1}}
 

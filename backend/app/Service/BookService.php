@@ -2,13 +2,19 @@
 
 namespace App\Service;
 
+use App\Repository\BookAuthorRepository;
 use App\Repository\BookRepository;
+use App\Repository\BookSubjectRepository;
 use Hyperf\Di\Annotation\Inject;
 
 class BookService
 {
     #[Inject]
     protected BookRepository $bookRepository;
+    #[Inject]
+    protected BookAuthorRepository $bookAuthorRepository;
+    #[Inject]
+    protected BookSubjectRepository $bookSubjectRepository;
 
     public function getAllBooks()
     {
@@ -22,7 +28,25 @@ class BookService
 
     public function createBook(array $data)
     {
-        return $this->bookRepository->create($data);
+        $book = $this->bookRepository->create($data);
+
+        if (!empty($data['authors'])) {
+            foreach ($data['authors'] as $authorId) {
+                $this->bookAuthorRepository->create([
+                    'book_id' => $book->id,
+                    'author_id' => $authorId,
+                ]);
+            }
+        }
+
+        if (!empty($data['subjects'])) {
+            foreach ($data['subjects'] as $subjectId) {
+                $this->bookSubjectRepository->create([
+                    'book_id' => $book->id,
+                    'subject_id' => $subjectId,
+                ]);
+            }
+        }
     }
 
     public function updateBook(int $id, array $data)

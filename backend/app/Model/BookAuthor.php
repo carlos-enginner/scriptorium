@@ -10,6 +10,8 @@ namespace App\Model;
  */
 class BookAuthor extends Model
 {
+    public bool $timestamps = false;
+
     /**
      * The table associated with the model.
      */
@@ -18,10 +20,17 @@ class BookAuthor extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected array $fillable = [];
+    protected array $fillable = ['book_id', 'author_id'];
 
     /**
      * The attributes that should be cast to native types.
      */
     protected array $casts = ['book_id' => 'integer', 'author_id' => 'integer'];
+
+    public bool $incrementing = false;
+
+    public function setKeysForSaveQuery($query)
+    {
+        return $query->where('book_id', $this->book_id)->where('author_id', $this->author_id);
+    }
 }
