@@ -13,12 +13,12 @@ export interface Book {
 
 export const fetchBooks = async (): Promise<Book[]> => {
   const response = await api.get("/books");
-  return Array.isArray(response.data) ? response.data : [];
+  return response.data?.data || [];
 };
 
 export const fetchBookById = async (id: number): Promise<Book> => {
   const response = await api.get(`/books/${id}`);
-  return response.data;
+  return response.data?.data || [];
 };
 
 export const createBook = async (book: Book) => {
