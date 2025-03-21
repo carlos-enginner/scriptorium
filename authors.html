@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gerenciar Autores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow-sm p-4">
+            <h2 class="text-center mb-4">📚 Gerenciar Autores</h2>
+
+            <form id="authorForm">
+                <div class="mb-3">
+                    <label class="form-label">Nome do Autor</label>
+                    <input type="text" class="form-control" id="authorName" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Adicionar Autor</button>
+            </form>
+
+            <h4 class="mt-4">📋 Lista de Autores</h4>
+            <ul class="list-group mt-2" id="authorList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("authorForm");
+            const authorList = document.getElementById("authorList");
+
+            function loadAuthors() {
+                fetch("http://localhost:9501/authors")
+                    .then(response => response.json())
+                    .then(data => {
+                        authorList.innerHTML = "";
+                        data.forEach(author => {
+                            let li = document.createElement("li");
+                            li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+                            li.innerHTML = `
+                                <span class="author-name">${author.name}</span>
+                                <div>
+                                    <button class="btn btn-sm btn-warning edit-btn" data-id="${author.id}">✏ Editar</button>
+                                    <button class="btn btn-sm btn-danger delete-btn" data-id="${author.id}">🗑 Remover</button>
+                                </div>
+                            `;
+                            authorList.appendChild(li);
+                        });
+                    });
+            }
+
+            loadAuthors();
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                const authorName = document.getElementById("authorName").value;
+
+                fetch("http://localhost:9501/authors", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: authorName })
+                })
+                .then(response => response.json())
+                .then(() => {
+                    form.reset();
+                    loadAuthors();
+                });
+            });
+
+            authorList.addEventListener("click", function (event) {
+                if (event.target.classList.contains("delete-btn")) {
+                    const id = event.target.dataset.id;
+                    fetch(`http://localhost:9501/authors/${id}`, { method: "DELETE" })
+                        .then(() => loadAuthors());
+                }
+
+                if (event.target.classList.contains("edit-btn")) {
+                    const id = event.target.dataset.id;
+                    const nameSpan = event.target.closest("li").querySelector(".author-name");
+                    const newName = prompt("Novo nome do autor:", nameSpan.textContent);
+
+                    if (newName) {
+                        fetch(`http://localhost:9501/authors/${id}`, {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ name: newName })
+                        })
+                        .then(() => loadAuthors());
+                    }
+                }
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
