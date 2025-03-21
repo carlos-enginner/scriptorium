@@ -74,33 +74,60 @@ const BookForm = ({ bookId }: BookFormProps) => {
       <input type="text" placeholder="Ano de Publicação" value={book.publication_year} onChange={(e) => setBook({ ...book, publication_year: e.target.value })} className="w-full p-2 border rounded mb-2" required />
 
       {/* Seleção de Autor */}
-      <select value={book.author_id} onChange={(e) => setBook({ ...book, author_id: Number(e.target.value) })} className="w-full p-2 border rounded mb-2">
-        <option value="">Selecione um Autor</option>
-        {authors?.map((author) => (
-          <option key={author.id} value={author.id}>
-            {author.name}
-          </option>
-        ))}
-      </select>
+      <div className="flex items-center gap-2 mb-2">
+        <select
+          multiple
+          value={book.authors} // Agora `authors` é uma array
+          onChange={(e) =>
+            setBook({ ...book, authors: Array.from(e.target.selectedOptions, (option) => Number(option.value)) })
+          }
+          className="w-full p-2 border rounded"
+        >
+          {authors?.map((author) => (
+            <option key={author.id} value={author.id}>
+              {author.name}
+            </option>
+          ))}
+        </select>
 
-      <div className="flex gap-2 mb-4">
-        <input type="text" placeholder="Novo Autor" value={newAuthor} onChange={(e) => setNewAuthor(e.target.value)} className="flex-grow p-2 border rounded" />
-        <button type="button" onClick={handleAddAuthor} className="bg-blue-500 text-white px-3 py-1 rounded">Adicionar</button>
+        {/* Botão para gerenciar autores */}
+        <button
+          type="button"
+          onClick={() => router.push("/authors")}
+          className="bg-blue-500 text-white px-3 py-2 rounded"
+        >
+          Adicionar autor
+        </button>
       </div>
+
 
       {/* Seleção de Assuntos */}
-      <select multiple value={book.subjects} onChange={(e) => setBook({ ...book, subjects: Array.from(e.target.selectedOptions, (option) => Number(option.value)) })} className="w-full p-2 border rounded mb-2">
-        {subjects?.map((subject) => (
-          <option key={subject.id} value={subject.id}>
-            {subject.description}
-          </option>
-        ))}
-      </select>
+      <div className="flex items-center gap-2 mb-2">
+        <select
+          multiple
+          value={book.subjects}
+          onChange={(e) =>
+            setBook({ ...book, subjects: Array.from(e.target.selectedOptions, (option) => Number(option.value)) })
+          }
+          className="w-full p-2 border rounded"
+        >
+          {subjects?.map((subject) => (
+            <option key={subject.id} value={subject.id}>
+              {subject.description}
+            </option>
+          ))}
+        </select>
 
-      <div className="flex gap-2 mb-4">
-        <input type="text" placeholder="Novo Assunto" value={newSubject} onChange={(e) => setNewSubject(e.target.value)} className="flex-grow p-2 border rounded" />
-        <button type="button" onClick={handleAddSubject} className="bg-green-500 text-white px-3 py-1 rounded">Adicionar</button>
+        {/* Botão para gerenciar assuntos */}
+        <button
+          type="button"
+          onClick={() => router.push("/subjects")}
+          className="bg-green-500 text-white px-3 py-2 rounded"
+        >
+          Gerenciar Assuntos
+        </button>
       </div>
+
 
       <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full">
         {bookId ? "Salvar Alterações" : "Cadastrar"}
