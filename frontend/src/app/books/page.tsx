@@ -16,8 +16,8 @@ const BookForm = ({ bookId }: BookFormProps) => {
     publisher: "",
     edition: 1,
     publication_year: "",
-    author_id: 0,
     subjects: [],
+    authors: [],
   });
 
   const [authors, setAuthors] = useState<Author[]>([]);
@@ -43,24 +43,6 @@ const BookForm = ({ bookId }: BookFormProps) => {
     router.push("/books");
   };
 
-  const handleAddAuthor = async () => {
-    if (newAuthor) {
-      const author = await createAuthor({ name: newAuthor });
-      setAuthors([...authors, author]);
-      setBook({ ...book, author_id: author.id! });
-      setNewAuthor("");
-    }
-  };
-
-  const handleAddSubject = async () => {
-    if (newSubject) {
-      const subject = await createSubject({ description: newSubject });
-      setSubjects([...subjects, subject]);
-      setBook({ ...book, subjects: [...book.subjects, subject.id!] });
-      setNewSubject("");
-    }
-  };
-
   return (
     <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md">
       <h2 className="text-xl font-bold mb-4">{bookId ? "Editar Livro" : "Novo Livro"}</h2>
@@ -74,57 +56,91 @@ const BookForm = ({ bookId }: BookFormProps) => {
       <input type="text" placeholder="Ano de Publicação" value={book.publication_year} onChange={(e) => setBook({ ...book, publication_year: e.target.value })} className="w-full p-2 border rounded mb-2" required />
 
       {/* Seleção de Autor */}
-      <div className="flex items-center gap-2 mb-2">
-        <select
-          multiple
-          value={book.authors} // Agora `authors` é uma array
-          onChange={(e) =>
-            setBook({ ...book, authors: Array.from(e.target.selectedOptions, (option) => Number(option.value)) })
-          }
-          className="w-full p-2 border rounded"
-        >
-          {authors?.map((author) => (
-            <option key={author.id} value={author.id}>
-              {author.name}
-            </option>
-          ))}
-        </select>
+      <div className="border rounded-lg p-4 mb-2">
+        <h3 className="text-lg font-semibold mb-2">Selecione os autores</h3>
+        <table className="w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border p-2">Selecionar</th>
+              <th className="border p-2">Nome</th>
+            </tr>
+          </thead>
+          <tbody>
+            {authors?.map((author) => (
+              <tr key={author.id} className="border">
+                <td className="border p-2 text-center">
+                  <input
+                    type="checkbox"
+                    checked={book.authors?.includes(author.id)}
+                    onChange={(e) => {
+                      const selectedAuthors = book.authors?.includes(author.id)
+                        ? book.authors.filter((id) => id !== author.id) // Remove se já estiver selecionado
+                        : [...book.authors, author.id]; // Adiciona se não estiver
 
-        {/* Botão para gerenciar autores */}
+                      setBook({ ...book, authors: selectedAuthors });
+                    }}
+                  />
+                </td>
+                <td className="border p-2">{author.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Botão para adicionar novo autor */}
         <button
           type="button"
           onClick={() => router.push("/authors")}
-          className="bg-blue-500 text-white px-3 py-2 rounded"
+          className="mt-3 bg-blue-500 text-white px-4 py-2 rounded"
         >
-          Adicionar autor
+          Gerenciar
         </button>
       </div>
 
 
       {/* Seleção de Assuntos */}
-      <div className="flex items-center gap-2 mb-2">
-        <select
-          multiple
-          value={book.subjects}
-          onChange={(e) =>
-            setBook({ ...book, subjects: Array.from(e.target.selectedOptions, (option) => Number(option.value)) })
-          }
-          className="w-full p-2 border rounded"
-        >
-          {subjects?.map((subject) => (
-            <option key={subject.id} value={subject.id}>
-              {subject.description}
-            </option>
-          ))}
-        </select>
+      <div className="border rounded-lg p-4 mb-2">
+        <h3 className="text-lg font-semibold mb-2">Selecione os assuntos</h3>
 
-        {/* Botão para gerenciar assuntos */}
+        {/* Tabela de Assuntos */}
+        <table className="w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border p-2">Selecionar</th>
+              <th className="border p-2">Descrição</th>
+            </tr>
+          </thead>
+          <tbody>
+            {subjects?.map((subject) => (
+              <tr key={subject.id} className="border">
+                <td className="border p-2 text-center">
+                  <input
+                    type="checkbox"
+                    checked={book.subjects?.includes(subject.id) ?? false}
+                    onChange={(e) => {
+                      const selectedSubjects = book.subjects
+                        ? book.subjects.includes(subject.id)
+                          ? book.subjects.filter((id) => id !== subject.id) // Remove se já estiver
+                          : [...book.subjects, subject.id] // Adiciona se não estiver
+                        : [subject.id]; // Se for undefined, inicializa com o primeiro item
+
+                      setBook({ ...book, subjects: selectedSubjects });
+                    }}
+                  />
+                </td>
+                <td className="border p-2">{subject.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        {/* Botão para adicionar novo assunto */}
         <button
           type="button"
           onClick={() => router.push("/subjects")}
-          className="bg-green-500 text-white px-3 py-2 rounded"
+          className="mt-3 bg-green-500 text-white px-4 py-2 rounded"
         >
-          Gerenciar Assuntos
+          Gerenciar
         </button>
       </div>
 
@@ -132,6 +148,7 @@ const BookForm = ({ bookId }: BookFormProps) => {
       <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full">
         {bookId ? "Salvar Alterações" : "Cadastrar"}
       </button>
+
     </form>
   );
 };

@@ -7,7 +7,7 @@ export interface Subject {
 
 export const fetchSubjects = async (): Promise<Subject[]> => {
   const response = await api.get("/subjects");
-  return response.data.data || [];
+  return response.data?.data || [];
 };
 
 export const fetchSubjectById = async (id: number): Promise<Subject> => {

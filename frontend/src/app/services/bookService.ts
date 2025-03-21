@@ -6,7 +6,7 @@ export interface Book {
   publisher: string;
   edition: number;
   publication_year: string;
-  author_id: number;
+  authors: number[];
   subjects: number[];
 }
 

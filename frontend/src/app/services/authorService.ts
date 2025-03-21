@@ -13,7 +13,7 @@ export const fetchAuthors = async (): Promise<Author[]> => {
 
 export const fetchAuthorById = async (id: number): Promise<Author> => {
   const response = await api.get(`/authors/${id}`);
-  return response.data;
+  return response.data?.data || [];
 };
 
 export const createAuthor = async (author: Omit<Author, 'id'>): Promise<Author> => {
