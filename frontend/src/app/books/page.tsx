@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Book, fetchBooks } from "@/app/services/bookService";
+import { Book, fetchBooks, deleteBook } from "@/app/services/bookService";
 
 const BookSearch = () => {
   const [search, setSearch] = useState("");
