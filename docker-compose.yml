@@ -21,11 +21,11 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - redis_data:/data
+      - ./data/redis:/data
     networks:
       - scriptorium_network
   db:
-    image: postgres:latest
+    image: postgres:15
     container_name: postgres_db
     restart: always
     environment:
@@ -35,7 +35,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./data/pg:/var/lib/postgresql/data
     networks:
     - scriptorium_network
 
@@ -47,10 +47,6 @@ services:
   #   volumes:
   #     - ./frontend:/app
   #   command: ["npm", "run", "dev"]
-
-volumes:
-  pgdata:
-  redis_data:
 
 networks:
   scriptorium_network:
