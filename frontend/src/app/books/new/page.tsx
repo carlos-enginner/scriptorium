@@ -54,7 +54,7 @@ const BookForm = ({ bookId }: BookFormProps) => {
 
       <input type="text" placeholder="Ano de publicação" value={book.publication_year == 1 ? "" : book.publication_year} onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })} className="w-full p-2 border rounded mb-2" required />
 
-      <input type="number" placeholder="Valor" value={book.price == 0 ? "" : book.price}  onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-2 border rounded mb-2" required />
+      <input type="number" placeholder="Valor" value={book.price == 0 ? "" : book.price} onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-2 border rounded mb-2" required />
 
       {/* Seleção de Autor */}
       <div className="border rounded-lg p-4 mb-2">
@@ -135,7 +135,6 @@ const BookForm = ({ bookId }: BookFormProps) => {
           </tbody>
         </table>
 
-        {/* Botão para adicionar novo assunto */}
         <button
           type="button"
           onClick={() => router.push("/subjects")}
@@ -143,12 +142,23 @@ const BookForm = ({ bookId }: BookFormProps) => {
         >
           Gerenciar
         </button>
+
+
       </div>
 
 
-      <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full">
-        {bookId ? "Salvar Alterações" : "Cadastrar"}
-      </button>
+      <div className="flex gap-2">
+        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-1/2">
+          {bookId ? "Salvar Alterações" : "Cadastrar"}
+        </button>
+
+        <a
+          href="/books"
+          className="bg-gray-500 text-white px-4 py-2 rounded w-1/2 text-center cursor-pointer flex items-center justify-center"
+        >
+          Cancelar
+        </a>
+      </div>
 
     </form>
   );

@@ -180,7 +180,7 @@ const BookForm = () => {
           type="submit"
           className="bg-green-500 text-white px-4 py-2 rounded w-full text-center cursor-pointer"
         >
-          {bookId ? "Salvar Alterações" : "Cadastrar"}
+          {bookId ? "Salvar" : "Cadastrar"}
         </button>
 
         {bookId && (

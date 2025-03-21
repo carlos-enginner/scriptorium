@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Book, fetchBooks, deleteBook } from "@/app/services/bookService";
+import { Search, Plus } from "lucide-react";
+
 
 const BookSearch = () => {
   const [search, setSearch] = useState("");
@@ -9,7 +11,7 @@ const BookSearch = () => {
   const [foundBook, setFoundBook] = useState<Book | null>(null);
 
   useEffect(() => {
-    fetchBooks().then(setBooks); // Carregar todos os livros inicialmente
+    fetchBooks().then(setBooks);
   }, []);
 
   const handleSearch = async () => {
@@ -30,19 +32,31 @@ const BookSearch = () => {
 
   return (
     <div>
-      {/* Campo de busca */}
-      <div className="flex gap-2 mb-4">
-        <input
-          type="text"
-          placeholder="Buscar por título..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 rounded w-full"
-        />
-        <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded">
-          Pesquisar
-        </button>
-      </div>
+
+<div className="flex gap-2 mb-4 items-center">
+  <input
+    type="text"
+    placeholder="Buscar por título..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="border p-2 rounded w-full"
+  />
+  
+  <button 
+    onClick={handleSearch} 
+    className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer w-[120px] flex items-center justify-center gap-2"
+  >
+    <Search size={16} /> Pesquisar
+  </button>
+
+  <a 
+    href="/books/new" 
+    className="bg-green-500 text-white px-4 py-2 rounded cursor-pointer w-[120px] flex items-center justify-center gap-2"
+  >
+    <Plus size={16} /> Adicionar
+  </a>
+</div>
+
 
       {foundBook ? (
         <div className="border rounded-lg p-4 shadow-md bg-white relative">
