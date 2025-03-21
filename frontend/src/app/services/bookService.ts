@@ -5,9 +5,10 @@ export interface Book {
   title: string;
   publisher: string;
   edition: number;
-  publication_year: string;
+  publication_year: number;
   authors: number[];
   subjects: number[];
+  price: number;
 }
 
 export const fetchBooks = async (): Promise<Book[]> => {

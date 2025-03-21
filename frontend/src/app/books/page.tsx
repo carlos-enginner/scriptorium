@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Book, createBook, fetchBookById, updateBook } from "@/app/services/bookService";
-import { fetchAuthors, Author, createAuthor } from "@/app/services/authorService";
-import { fetchSubjects, Subject, createSubject } from "@/app/services/subjectService";
+import { fetchAuthors, Author } from "@/app/services/authorService";
+import { fetchSubjects, Subject } from "@/app/services/subjectService";
 import { useRouter } from "next/navigation";
 
 interface BookFormProps {
@@ -14,16 +14,15 @@ const BookForm = ({ bookId }: BookFormProps) => {
   const [book, setBook] = useState<Book>({
     title: "",
     publisher: "",
-    edition: 1,
-    publication_year: "",
+    edition: 0,
+    publication_year: 0,
     subjects: [],
     authors: [],
+    price: 0
   });
 
   const [authors, setAuthors] = useState<Author[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newSubject, setNewSubject] = useState("");
 
   const router = useRouter();
 
@@ -53,7 +52,9 @@ const BookForm = ({ bookId }: BookFormProps) => {
 
       <input type="number" placeholder="Edição" value={book.edition} onChange={(e) => setBook({ ...book, edition: Number(e.target.value) })} className="w-full p-2 border rounded mb-2" required />
 
-      <input type="text" placeholder="Ano de Publicação" value={book.publication_year} onChange={(e) => setBook({ ...book, publication_year: e.target.value })} className="w-full p-2 border rounded mb-2" required />
+      <input type="text" placeholder="Ano de publicação" value={book.publication_year == 1 ? "" : book.publication_year} onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })} className="w-full p-2 border rounded mb-2" required />
+
+      <input type="number" placeholder="Valor" value={book.price == 0 ? "" : book.price}  onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-2 border rounded mb-2" required />
 
       {/* Seleção de Autor */}
       <div className="border rounded-lg p-4 mb-2">

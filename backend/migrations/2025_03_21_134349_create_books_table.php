@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('publisher', 40);
             $table->integer('edition');
             $table->integer('publication_year');
+            $table->decimal('price', 10, 2);
             $table->datetimes();
         });
     }

@@ -27,7 +27,8 @@ class Book extends Model
         'title',
         'publisher',
         'edition',
-        'publication_year'
+        'publication_year',
+        'price'
     ];
 
     /**
