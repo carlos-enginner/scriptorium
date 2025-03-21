@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Captura o nome da última tag
+TAG=$(git describe --tags --abbrev=0)
+
+# Se não houver tag, define a versão inicial
+if [ -z "$TAG" ]; then
+  TAG="v0.1.0"
+fi
+
+# Remove o "v" da tag para facilitar a manipulação
+version=${TAG#v}
+
+# Separa a versão em major, minor e patch
+IFS='.' read -r major minor patch <<< "$version"
+
+# Recupera a última mensagem de commit
+commit_msg=$(git log -1 --pretty=%B)
+
+# Determina o tipo de incremento baseado na mensagem de commit
+if [[ "$commit_msg" == *"BREAKING CHANGE"* ]] || [[ "$commit_msg" == *"chore:"* ]]; then
+  major=$((major + 1))
+  minor=0
+  patch=0
+elif [[ "$commit_msg" == *"feat:"* ]]; then
+  minor=$((minor + 1))
+  patch=0
+elif [[ "$commit_msg" == *"fix:"* ]]; then
+  patch=$((patch + 1))
+fi
+
+# Construa a nova versão
+new_version="v$major.$minor.$patch"
+
+# Exibe a nova versão
+echo "Versão atualizada para $new_version"
+
+# Cria a nova tag no Git
+git tag -a "$new_version"
+git push origin "$new_version" && echo "Tag $new_version enviada para o repositório com sucesso!" || { echo "Falha ao empurrar as tags. Abortando."; exit 1; }

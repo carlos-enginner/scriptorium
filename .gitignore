@@ -1,0 +1,3 @@
+.qodo
+.git/*
+!.git/hooks/
