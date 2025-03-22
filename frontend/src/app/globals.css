@@ -24,3 +24,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes spin-on-hover {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(90deg);
+  }
+
+  /* Pequena rotação */
+}
+
+.animate-spin-on-hover:hover {
+  animation: spin-on-hover 0.3s ease-in-out;
+}

@@ -120,7 +120,6 @@ const BookForm = () => {
           required
         />
 
-        {/* Seleção de Autor */}
         <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Selecione os autores</h3>
           <div className="space-y-2">
@@ -142,7 +141,6 @@ const BookForm = () => {
           </div>
         </div>
 
-        {/* Seleção de Assuntos */}
         <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Selecione os assuntos</h3>
           <div className="space-y-2">

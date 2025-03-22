@@ -5,6 +5,7 @@ import { Book, createBook, fetchBookById, updateBook } from "@/app/services/book
 import { fetchAuthors, Author } from "@/app/services/authorService";
 import { fetchSubjects, Subject } from "@/app/services/subjectService";
 import { useRouter } from "next/navigation";
+import { Settings } from "lucide-react";
 
 interface BookFormProps {
   bookId?: number;
@@ -54,9 +55,18 @@ const BookForm = ({ bookId }: BookFormProps) => {
         <input type="number" placeholder="Ano de Publicação" value={book.publication_year || ""} onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
         <input type="number" placeholder="Valor" step="0.01" value={book.price || ""} onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
 
-        {/* Seleção de Autor */}
         <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">Selecione os autores</h3>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-lg font-semibold">Selecione os autores</h3>
+            <button
+              type="button"
+              onClick={() => router.push("/authors")}
+              className="text-gray-500 hover:text-blue-600 transition"
+            >
+              <Settings className="w-6 h-6 animate-spin-on-hover" />
+            </button>
+          </div>
+
           <div className="space-y-2">
             {authors.map((author) => (
               <label key={author.id} className="flex items-center gap-2 text-gray-700">
@@ -74,18 +84,21 @@ const BookForm = ({ bookId }: BookFormProps) => {
               </label>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={() => router.push("/authors")}
-            className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-          >
-            Gerenciar Autores
-          </button>
         </div>
 
-        {/* Seleção de Assuntos */}
+
         <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">Selecione os assuntos</h3>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-lg font-semibold">Selecione os assuntos</h3>
+            <button
+              type="button"
+              onClick={() => router.push("/subjects")}
+              className="text-gray-500 hover:text-blue-600 transition"
+            >
+              <Settings className="w-6 h-6 animate-spin-on-hover" />
+            </button>
+          </div>
+
           <div className="space-y-2">
             {subjects.map((subject) => (
               <label key={subject.id} className="flex items-center gap-2 text-gray-700">
@@ -103,14 +116,8 @@ const BookForm = ({ bookId }: BookFormProps) => {
               </label>
             ))}
           </div>
-          <button
-            type="button"
-            onClick={() => router.push("/subjects")}
-            className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
-          >
-            Gerenciar Assuntos
-          </button>
         </div>
+
 
         <div className="flex gap-3 mt-4">
           <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full text-center font-semibold hover:bg-blue-600 transition">
