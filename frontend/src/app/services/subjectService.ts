@@ -5,8 +5,10 @@ export interface Subject {
   description: string;
 }
 
-export const fetchSubjects = async (): Promise<Subject[]> => {
-  const response = await api.get("/subjects");
+export const fetchSubjects = async (title?: string): Promise<Subject[]> => {
+  const response = await api.get("/subjects", {
+    params: title ? { title } : {},
+  });
   return response.data?.data || [];
 };
 

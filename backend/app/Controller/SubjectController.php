@@ -25,9 +25,19 @@ class SubjectController
     protected ResponseFactory $response;
 
     #[GetMapping(path: "subject")]
-    public function index(): ResponseInterface
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
-        $books = $this->subjectService->getAllSubjects();
+        $queryParams = $request->getQueryParams();
+        $title = $queryParams['title'] ?? null;
+
+        $books = [];
+
+        if ($title) {
+            $books = $this->subjectService->getSubjectsByDescription($title);
+        } else {
+            $books = $this->subjectService->getAllSubjects();
+        }
+
         return $this->response->json([
             'success' => true,
             'data' => $books

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Subject;
 use App\Repository\SubjectRepository;
 use Hyperf\Di\Annotation\Inject;
 
@@ -13,6 +14,11 @@ class SubjectService
     public function getAllSubjects()
     {
         return $this->repository->getAll();
+    }
+
+    public function getSubjectsByDescription(string $title)
+    {
+        return Subject::where('description', 'ILIKE', "%{$title}%")->get();
     }
 
     public function getSubjectById(int $id)
