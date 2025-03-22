@@ -43,124 +43,86 @@ const BookForm = ({ bookId }: BookFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md">
-      <h2 className="text-xl font-bold mb-4">{bookId ? "Editar Livro" : "Novo Livro"}</h2>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
+      <h1 className="text-5xl font-bold text-gray-800 mt-4">Scriptorium</h1>
+      <p className="text-gray-600 mb-6">{bookId ? "Edite os detalhes do livro" : "Cadastre um novo livro"}</p>
 
-      <input type="text" placeholder="Título" value={book.title} onChange={(e) => setBook({ ...book, title: e.target.value })} className="w-full p-2 border rounded mb-2" required />
+      <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
+        <input type="text" placeholder="Título" value={book.title} onChange={(e) => setBook({ ...book, title: e.target.value })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="text" placeholder="Editora" value={book.publisher} onChange={(e) => setBook({ ...book, publisher: e.target.value })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="number" placeholder="Edição" value={book.edition} onChange={(e) => setBook({ ...book, edition: Number(e.target.value) })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="number" placeholder="Ano de Publicação" value={book.publication_year || ""} onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="number" placeholder="Valor" step="0.01" value={book.price || ""} onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
 
-      <input type="text" placeholder="Editora" value={book.publisher} onChange={(e) => setBook({ ...book, publisher: e.target.value })} className="w-full p-2 border rounded mb-2" required />
-
-      <input type="number" placeholder="Edição" value={book.edition} onChange={(e) => setBook({ ...book, edition: Number(e.target.value) })} className="w-full p-2 border rounded mb-2" required />
-
-      <input type="text" placeholder="Ano de publicação" value={book.publication_year == 1 ? "" : book.publication_year} onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })} className="w-full p-2 border rounded mb-2" required />
-
-      <input type="number" placeholder="Valor" value={book.price == 0 ? "" : book.price} onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-2 border rounded mb-2" required />
-
-      {/* Seleção de Autor */}
-      <div className="border rounded-lg p-4 mb-2">
-        <h3 className="text-lg font-semibold mb-2">Selecione os autores</h3>
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2">Selecionar</th>
-              <th className="border p-2">Nome</th>
-            </tr>
-          </thead>
-          <tbody>
-            {authors?.map((author) => (
-              <tr key={author.id} className="border">
-                <td className="border p-2 text-center">
-                  <input
-                    type="checkbox"
-                    checked={book.authors?.includes(author.id)}
-                    onChange={(e) => {
-                      const selectedAuthors = book.authors?.includes(author.id)
-                        ? book.authors.filter((id) => id !== author.id) // Remove se já estiver selecionado
-                        : [...book.authors, author.id]; // Adiciona se não estiver
-
-                      setBook({ ...book, authors: selectedAuthors });
-                    }}
-                  />
-                </td>
-                <td className="border p-2">{author.name}</td>
-              </tr>
+        {/* Seleção de Autor */}
+        <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
+          <h3 className="text-lg font-semibold mb-2">Selecione os autores</h3>
+          <div className="space-y-2">
+            {authors.map((author) => (
+              <label key={author.id} className="flex items-center gap-2 text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={book.authors?.includes(author.id)}
+                  onChange={() => {
+                    const selectedAuthors = book.authors?.includes(author.id)
+                      ? book.authors.filter((id) => id !== author.id)
+                      : [...book.authors, author.id];
+                    setBook({ ...book, authors: selectedAuthors });
+                  }}
+                />
+                {author.name}
+              </label>
             ))}
-          </tbody>
-        </table>
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push("/authors")}
+            className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          >
+            Gerenciar Autores
+          </button>
+        </div>
 
-        {/* Botão para adicionar novo autor */}
-        <button
-          type="button"
-          onClick={() => router.push("/authors")}
-          className="mt-3 bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Gerenciar
-        </button>
-      </div>
-
-
-      {/* Seleção de Assuntos */}
-      <div className="border rounded-lg p-4 mb-2">
-        <h3 className="text-lg font-semibold mb-2">Selecione os assuntos</h3>
-
-        {/* Tabela de Assuntos */}
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2">Selecionar</th>
-              <th className="border p-2">Descrição</th>
-            </tr>
-          </thead>
-          <tbody>
-            {subjects?.map((subject) => (
-              <tr key={subject.id} className="border">
-                <td className="border p-2 text-center">
-                  <input
-                    type="checkbox"
-                    checked={book.subjects?.includes(subject.id) ?? false}
-                    onChange={(e) => {
-                      const selectedSubjects = book.subjects
-                        ? book.subjects.includes(subject.id)
-                          ? book.subjects.filter((id) => id !== subject.id) // Remove se já estiver
-                          : [...book.subjects, subject.id] // Adiciona se não estiver
-                        : [subject.id]; // Se for undefined, inicializa com o primeiro item
-
-                      setBook({ ...book, subjects: selectedSubjects });
-                    }}
-                  />
-                </td>
-                <td className="border p-2">{subject.description}</td>
-              </tr>
+        {/* Seleção de Assuntos */}
+        <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
+          <h3 className="text-lg font-semibold mb-2">Selecione os assuntos</h3>
+          <div className="space-y-2">
+            {subjects.map((subject) => (
+              <label key={subject.id} className="flex items-center gap-2 text-gray-700">
+                <input
+                  type="checkbox"
+                  checked={book.subjects?.includes(subject.id) ?? false}
+                  onChange={() => {
+                    const selectedSubjects = book.subjects?.includes(subject.id)
+                      ? book.subjects.filter((id) => id !== subject.id)
+                      : [...book.subjects, subject.id];
+                    setBook({ ...book, subjects: selectedSubjects });
+                  }}
+                />
+                {subject.description}
+              </label>
             ))}
-          </tbody>
-        </table>
+          </div>
+          <button
+            type="button"
+            onClick={() => router.push("/subjects")}
+            className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+          >
+            Gerenciar Assuntos
+          </button>
+        </div>
 
-        <button
-          type="button"
-          onClick={() => router.push("/subjects")}
-          className="mt-3 bg-green-500 text-white px-4 py-2 rounded"
-        >
-          Gerenciar
-        </button>
+        <div className="flex gap-3 mt-4">
+          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full text-center font-semibold hover:bg-blue-600 transition">
+            {bookId ? "Salvar Alterações" : "Cadastrar"}
+          </button>
 
-
-      </div>
-
-
-      <div className="flex gap-2">
-        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-1/2">
-          {bookId ? "Salvar Alterações" : "Cadastrar"}
-        </button>
-
-        <a
-          href="/books"
-          className="bg-gray-500 text-white px-4 py-2 rounded w-1/2 text-center cursor-pointer flex items-center justify-center"
-        >
-          Cancelar
-        </a>
-      </div>
-
-    </form>
+          <a href="/books" className="bg-gray-500 text-white px-4 py-2 rounded w-full text-center font-semibold hover:bg-gray-600 transition">
+            Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
   );
 };
 
