@@ -29,6 +29,7 @@ const EditAuthorPage = () => {
           type="text"
           placeholder="Nome do autor"
           value={name ?? ""}
+          maxLength={40}
           onChange={(e) => setName(e.target.value)}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
           required

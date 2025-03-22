@@ -27,8 +27,9 @@ const EditSubjectPage = () => {
       <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
         <input
           type="text"
-          placeholder="Descrição do Assunto"
+          placeholder="Descrição do assunto"
           value={description ?? ""}
+          maxLength={40}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
           required
@@ -45,7 +46,6 @@ const EditSubjectPage = () => {
           <button
             onClick={(e) => {
               e.preventDefault();
-              handleDelete();
             }}
             className="bg-red-500 text-white px-4 py-2 rounded w-full text-center font-semibold hover:bg-red-600 transition"
           >

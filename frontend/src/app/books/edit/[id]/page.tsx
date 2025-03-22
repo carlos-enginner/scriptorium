@@ -25,16 +25,20 @@ const BookForm = () => {
   const [authors, setAuthors] = useState<Author[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentYear, setCurrentYear] = useState(Number);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        setAuthors(await fetchAuthors());
-        setSubjects(await fetchSubjects());
         if (bookId) {
           const fetchedBook = await fetchBookById(bookId);
+          setAuthors(await fetchAuthors());
+          setSubjects(await fetchSubjects());
           setBook(fetchedBook);
+
+          const year = new Date().getFullYear();
+          setCurrentYear(year);
         }
       } finally {
         setLoading(false);
@@ -78,6 +82,7 @@ const BookForm = () => {
           type="text"
           placeholder="Título"
           value={book.title}
+          maxLength={40}
           onChange={(e) => setBook({ ...book, title: e.target.value })}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
           required
@@ -87,6 +92,7 @@ const BookForm = () => {
           type="text"
           placeholder="Editora"
           value={book.publisher}
+          maxLength={40}
           onChange={(e) => setBook({ ...book, publisher: e.target.value })}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
           required
@@ -95,6 +101,8 @@ const BookForm = () => {
         <input
           type="number"
           placeholder="Edição"
+          min={1}
+          maxLength={10}
           value={book.edition}
           onChange={(e) => setBook({ ...book, edition: Number(e.target.value) })}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
@@ -103,7 +111,9 @@ const BookForm = () => {
 
         <input
           type="number"
-          placeholder="Ano de Publicação"
+          placeholder="Ano de publicação"
+          maxLength={4}
+          max={currentYear}
           value={book.publication_year || ""}
           onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
@@ -115,6 +125,7 @@ const BookForm = () => {
           placeholder="Valor"
           step="0.01"
           value={book.price || ""}
+          maxLength={10}
           onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
           required

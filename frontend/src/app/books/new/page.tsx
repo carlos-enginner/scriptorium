@@ -24,12 +24,16 @@ const BookForm = ({ bookId }: BookFormProps) => {
 
   const [authors, setAuthors] = useState<Author[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [currentYear, setCurrentYear] = useState(Number);
 
   const router = useRouter();
 
   useEffect(() => {
     fetchAuthors().then(setAuthors);
     fetchSubjects().then(setSubjects);
+    const year = new Date().getFullYear();
+    setCurrentYear(year);
+
     if (bookId) fetchBookById(bookId).then(setBook);
   }, [bookId]);
 
@@ -49,11 +53,11 @@ const BookForm = ({ bookId }: BookFormProps) => {
       <p className="text-gray-600 mb-6">{bookId ? "Edite os detalhes do livro" : "Cadastre um novo livro"}</p>
 
       <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
-        <input type="text" placeholder="Título" value={book.title} onChange={(e) => setBook({ ...book, title: e.target.value })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
-        <input type="text" placeholder="Editora" value={book.publisher} onChange={(e) => setBook({ ...book, publisher: e.target.value })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
-        <input type="number" placeholder="Edição" value={book.edition} onChange={(e) => setBook({ ...book, edition: Number(e.target.value) })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
-        <input type="number" placeholder="Ano de Publicação" value={book.publication_year || ""} onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
-        <input type="number" placeholder="Valor" step="0.01" value={book.price || ""} onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="text" placeholder="Título" maxLength={40} value={book.title} onChange={(e) => setBook({ ...book, title: e.target.value })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="text" placeholder="Editora" maxLength={40} value={book.publisher} onChange={(e) => setBook({ ...book, publisher: e.target.value })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="number" placeholder="Edição" maxLength={10} min={1} max={100} value={book.edition || 1} onChange={(e) => setBook({ ...book, edition: Number(e.target.value) })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="number" placeholder="Ano de publicação" maxLength={4} min={currentYear - 500} max={currentYear} value={book.publication_year || currentYear} onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
+        <input type="number" placeholder="Valor" step="0.01" maxLength={10} value={book.price || ""} onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })} className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200" required />
 
         <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
           <div className="flex items-center justify-between mb-2">

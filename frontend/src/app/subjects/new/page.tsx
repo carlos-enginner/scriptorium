@@ -22,8 +22,9 @@ const NewSubjectPage = () => {
       <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
         <input
           type="text"
-          placeholder="Descrição do Assunto"
+          placeholder="Descrição do assunto"
           value={description}
+          maxLength={20}
           onChange={(e) => setDescription(e.target.value)}
           className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
           required
