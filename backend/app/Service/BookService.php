@@ -6,6 +6,8 @@ use App\Repository\BookAuthorRepository;
 use App\Repository\BookRepository;
 use App\Repository\BookSubjectRepository;
 use Hyperf\Di\Annotation\Inject;
+use LogicException;
+use Throwable;
 
 class BookService
 {
@@ -28,7 +30,13 @@ class BookService
 
     public function getBookById(int $id)
     {
-        return $this->bookRepository->findById($id);
+        $book = $this->bookRepository->findById($id);
+
+        $book['subjects'] = $this->bookSubjectRepository->getSubjectsByBookId($id);
+
+        $book['authors'] = $this->bookAuthorRepository->getAuthorsByBookId($id);
+
+        return $book;
     }
 
     public function createBook(array $data)
@@ -56,7 +64,17 @@ class BookService
 
     public function updateBook(int $id, array $data)
     {
-        return $this->bookRepository->update($id, $data);
+        try {
+            $update = $this->bookRepository->update($id, $data);
+
+            $this->bookSubjectRepository->upsert($id, $data["subjects"]);
+
+            $this->bookAuthorRepository->upsert($id, $data["authors"]);
+
+            return $update;
+        } catch (Throwable $e) {
+            throw new LogicException($e->getMessage());
+        }
     }
 
     public function deleteBook(int $id)
