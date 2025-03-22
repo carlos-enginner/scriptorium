@@ -17,10 +17,10 @@ class AlterBooksTableForTsvectorWithTrigger extends Migration
         ');
 
         DB::statement('
-            CREATE OR REPLACE FUNCTION update_title_tsvector() 
+            CREATE OR REPLACE FUNCTION update_title_tsvector()
             RETURNS TRIGGER AS $$
             BEGIN
-                NEW.title_tsvector := to_tsvector(\'portuguese\', NEW.title);
+                NEW.title_tsvector := to_tsvector(\'portuguese\', unaccent(NEW.title));
                 RETURN NEW;
             END;
             $$ LANGUAGE plpgsql;

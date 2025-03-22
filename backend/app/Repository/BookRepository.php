@@ -11,6 +11,11 @@ class BookRepository
         return Book::all();
     }
 
+    public function getBooksByTitle(string $title)
+    {
+        return Book::whereRaw('title_tsvector @@ to_tsquery(unaccent(?))', [$title])->get();
+    }
+
     public function findById(int $id)
     {
         return Book::find($id);

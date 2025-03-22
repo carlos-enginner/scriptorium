@@ -10,6 +10,10 @@ class AuthorRepository
     {
         return Author::all();
     }
+    public function getAuthorByName(string $author)
+    {
+        return Author::whereRaw('name_tsvector @@ to_tsquery(unaccent(?))', [$author])->get();
+    }
 
     public function findById(int $id)
     {

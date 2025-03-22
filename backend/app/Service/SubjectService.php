@@ -16,9 +16,9 @@ class SubjectService
         return $this->repository->getAll();
     }
 
-    public function getSubjectsByDescription(string $title)
+    public function getSubjectsByDescription(string $subject)
     {
-        return Subject::where('description', 'ILIKE', "%{$title}%")->get();
+        return $this->repository->getSubjectsByDescription($subject);
     }
 
     public function getSubjectById(int $id)

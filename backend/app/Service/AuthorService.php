@@ -16,9 +16,9 @@ class AuthorService
         return $this->repository->getAll();
     }
 
-    public function getAuthorByName(string $title)
+    public function getAuthorByName(string $author)
     {
-        return Author::where('name', 'ILIKE', "%{$title}%")->get();
+        return $this->repository->getAuthorByName($author);
     }
 
     public function getAuthorById(int $id)

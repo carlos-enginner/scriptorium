@@ -7,26 +7,28 @@ class AlterAuthorsTableForTsvectorWithTrigger extends Migration
 {
     public function up()
     {
-       DB::statement('ALTER TABLE authors ADD COLUMN name_tsvector tsvector');
+        DB::statement('CREATE EXTENSION IF NOT EXISTS "unaccent"');
 
-       DB::statement('CREATE INDEX idx_name_tsvector ON authors USING gin(name_tsvector)');
+        DB::statement('ALTER TABLE authors ADD COLUMN name_tsvector tsvector');
 
-       DB::statement('
+        DB::statement('CREATE INDEX idx_name_tsvector ON authors USING gin(name_tsvector)');
+
+        DB::statement('
            UPDATE authors
            SET name_tsvector = to_tsvector(\'portuguese\', name)
        ');
 
-       DB::statement('
-           CREATE OR REPLACE FUNCTION update_name_tsvector() 
+        DB::statement('
+           CREATE OR REPLACE FUNCTION update_name_tsvector()
            RETURNS TRIGGER AS $$
            BEGIN
-               NEW.name_tsvector := to_tsvector(\'portuguese\', NEW.name);
+               NEW.name_tsvector := to_tsvector(\'portuguese\', unaccent(NEW.name));
                RETURN NEW;
            END;
            $$ LANGUAGE plpgsql;
        ');
 
-       DB::statement('
+        DB::statement('
            CREATE TRIGGER trg_update_name_tsvector
            BEFORE INSERT OR UPDATE ON authors
            FOR EACH ROW

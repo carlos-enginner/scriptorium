@@ -11,6 +11,11 @@ class SubjectRepository
         return Subject::all();
     }
 
+    public function getSubjectsByDescription(string $subject)
+    {
+        return Subject::whereRaw('description_tsvector @@ to_tsquery(unaccent(?))', [$subject])->get();
+    }
+
     public function findById(int $id)
     {
         return Subject::find($id);

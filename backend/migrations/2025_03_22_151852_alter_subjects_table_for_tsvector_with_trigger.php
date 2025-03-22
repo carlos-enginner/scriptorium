@@ -17,10 +17,10 @@ class AlterSubjectsTableForTsvectorWithTrigger extends Migration
         ');
 
         DB::statement('
-            CREATE OR REPLACE FUNCTION update_description_tsvector() 
+            CREATE OR REPLACE FUNCTION update_description_tsvector()
             RETURNS TRIGGER AS $$
             BEGIN
-                NEW.description_tsvector := to_tsvector(\'portuguese\', NEW.description);
+                NEW.description_tsvector := to_tsvector(\'portuguese\', unaccent(NEW.description));
                 RETURN NEW;
             END;
             $$ LANGUAGE plpgsql;
