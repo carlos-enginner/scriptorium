@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { Book, createBook, fetchBookById, updateBook, deleteBook } from "@/app/services/bookService";
 import { fetchAuthors, Author } from "@/app/services/authorService";
 import { fetchSubjects, Subject } from "@/app/services/subjectService";
+import { Loader2 } from "lucide-react";
 
 const BookForm = () => {
   const router = useRouter();
@@ -59,7 +60,13 @@ const BookForm = () => {
     }
   };
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+        <p className="text-gray-600 mt-2 text-lg">Carregando...</p>
+      </div>
+    );
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
