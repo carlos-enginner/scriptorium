@@ -8,14 +8,15 @@ use App\Service\AuthorService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\Di\Annotation\Inject;
-use App\Service\SubjectService;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Psr\Http\Message\ResponseInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface;
+use Hyperf\Swagger\Annotation as SA;
 
+#[SA\HyperfServer(name: 'http')]
 #[Controller]
 class AuthorController
 {
@@ -25,6 +26,34 @@ class AuthorController
     #[Inject]
     protected ResponseFactory $response;
 
+    #[SA\Get(path: '/author', summary: 'Lista todos os autores ou busca por nome', tags: ['Autores'])]
+    #[SA\Parameter(
+        name: 'name',
+        in: 'query',
+        description: 'Filtra autores pelo nome',
+        required: false,
+        schema: new SA\Schema(type: 'string')
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Lista de autores',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Lista de autores',
+                            type: 'array',
+                            items: new SA\Items(ref: '#/components/schemas/Author')
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
     #[GetMapping(path: "author")]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
