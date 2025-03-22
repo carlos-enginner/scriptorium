@@ -41,13 +41,18 @@ services:
     networks:
       - scriptorium_network
   db:
-    image: postgres:15
+    build:
+      context: .
+      dockerfile: ./backend/infra/postgres/Dockerfile
     container_name: postgres_db
     restart: always
     environment:
       POSTGRES_DB: scriptorium
       POSTGRES_USER: scripto
       POSTGRES_PASSWORD: scripto142536
+      LANG: pt_BR.UTF-8
+      LC_ALL: pt_BR.UTF-8
+      LC_CTYPE: pt_BR.UTF-8
     ports:
       - "5432:5432"
     volumes:
