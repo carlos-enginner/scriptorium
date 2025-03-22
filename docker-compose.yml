@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
       - cache
-    command: [ "php", "/var/www/bin/hyperf.php", "server:watch" ]
+    command: [ "php", "/var/www/bin/hyperf.php", "start" ]
     networks:
       - scriptorium_network
 
