@@ -26,11 +26,23 @@ class AuthorController
     protected ResponseFactory $response;
 
     #[GetMapping(path: "author")]
-    public function index(): ResponseInterface
+    public function index(ServerRequestInterface $request): ResponseInterface
     {
-        $authors = $this->authorService->getAllAuthors();
+        $queryParams = $request->getQueryParams();
+        $name = $queryParams['name'] ?? null;
 
-        return $this->response->json(['success' => true, 'data' => $authors]);
+        $authors = [];
+
+        if ($name) {
+            $authors = $this->authorService->getAuthorByName($name);
+        } else {
+            $authors = $this->authorService->getAllAuthors();
+        }
+
+        return $this->response->json([
+            'success' => true,
+            'data' => $authors
+        ]);
     }
 
     #[GetMapping(path: "author/{id}")]

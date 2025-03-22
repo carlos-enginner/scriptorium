@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Model\Author;
 use App\Repository\AuthorRepository;
 use Hyperf\Di\Annotation\Inject;
 
@@ -13,6 +14,11 @@ class AuthorService
     public function getAllAuthors()
     {
         return $this->repository->getAll();
+    }
+
+    public function getAuthorByName(string $title)
+    {
+        return Author::where('name', 'ILIKE', "%{$title}%")->get();
     }
 
     public function getAuthorById(int $id)

@@ -5,8 +5,10 @@ export interface Author {
   name: string;
 }
 
-export const fetchAuthors = async (): Promise<Author[]> => {
-  const response = await api.get('/authors');
+export const fetchAuthors = async (name?: string): Promise<Author[]> => {
+  const response = await api.get("/authors", {
+    params: name ? { name } : {},
+  });
   return response.data?.data || [];
 };
 
