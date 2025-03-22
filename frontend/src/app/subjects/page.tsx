@@ -1,40 +1,113 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { fetchSubjects, deleteSubject, Subject } from "@/app/services/subjectService";
-import Link from "next/link";
+import { useState } from "react";
+import { Subject, fetchSubjects, deleteSubject } from "@/app/services/subjectService";
+import { Search, Plus, Edit, Trash } from "lucide-react";
 
-const SubjectsPage = () => {
+const SubjectSearch = () => {
+  const [search, setSearch] = useState("");
   const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [foundSubject, setFoundSubject] = useState<Subject | null>(null);
+  const [searched, setSearched] = useState(false);
 
-  useEffect(() => {
-    fetchSubjects().then(setSubjects);
-  }, []);
+  const handleSearch = async () => {
+    if (search.trim().length === 0) return;
 
-  const handleDelete = async (id: number) => {
-    if (confirm("Tem certeza que deseja excluir este assunto?")) {
-      await deleteSubject(id);
-      setSubjects(subjects.filter((subject) => subject.id !== id));
+    setSearched(true);
+    const results = await fetchSubjects(search);
+
+    if (results.length === 1) {
+      setFoundSubject(results[0]);
+      setSubjects([]);
+    } else {
+      setFoundSubject(null);
+      setSubjects(results);
     }
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Lista de Assuntos</h2>
-      <Link href="/subjects/new" className="bg-blue-500 text-white px-3 py-2 rounded">Novo Assunto</Link>
-      <ul className="mt-4">
-        {subjects.map((subject) => (
-          <li key={subject.id} className="border-b py-2 flex justify-between">
-            <span>{subject.description}</span>
-            <div>
-              <Link href={`/subjects/edit/${subject.id}`} className="text-blue-500 mr-2">Editar</Link>
-              <button onClick={() => handleDelete(subject.id)} className="text-red-500">Excluir</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
+      <h1 className="text-5xl font-bold text-gray-800 mt-4">Scriptorium</h1>
+      <p className="text-gray-600 mb-6">Busque e gerencie seus assuntos</p>
+
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearch();
+        }}
+        className="bg-white shadow-md rounded-full flex items-center w-full max-w-2xl px-4 py-2"
+      >
+        <button type="submit" className="text-gray-500 hover:text-gray-700 transition">
+          <Search size={20} />
+        </button>
+        <input
+          type="text"
+          placeholder="Buscar assunto"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full px-3 py-2 text-lg border-none outline-none bg-transparent"
+        />
+        <a href="/subjects/new" className="text-blue-500 hover:text-blue-600 transition flex items-center justify-center">
+          <Plus size={24} />
+        </a>
+      </form>
+
+      {foundSubject ? (
+        <div className="bg-white shadow-lg rounded-lg p-6 mt-6 w-full max-w-2xl">
+          <h3 className="text-2xl font-semibold">{foundSubject.description}</h3>
+
+          <div className="flex justify-end mt-4 gap-4">
+            <a href={`/subjects/edit/${foundSubject.id}`} className="text-blue-500 hover:text-blue-600 transition">
+              <Edit size={20} />
+            </a>
+            <a
+              href="#"
+              onClick={async (e) => {
+                e.preventDefault();
+                if (confirm("Tem certeza que deseja excluir este assunto?")) {
+                  await deleteSubject(foundSubject.id);
+                  setFoundSubject(null);
+                }
+              }}
+              className="text-red-500 hover:text-red-600 transition"
+            >
+              <Trash size={20} />
+            </a>
+          </div>
+        </div>
+      ) : subjects.length > 0 ? (
+        <div className="w-full max-w-2xl mt-6">
+          <ul className="bg-white shadow-lg rounded-lg p-4">
+            {subjects.map((subject) => (
+              <li key={subject.id} className="border-b last:border-none py-4 px-2 flex justify-between items-center">
+                <span className="text-lg">{subject.description}</span>
+                <div className="flex gap-3">
+                  <a href={`/subjects/edit/${subject.id}`} className="text-blue-500 hover:text-blue-600 transition">
+                    <Edit size={20} />
+                  </a>
+                  <a
+                    href="#"
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      if (confirm("Tem certeza que deseja excluir este assunto?")) {
+                        await deleteSubject(subject.id);
+                        setSubjects(subjects.filter((s) => s.id !== subject.id));
+                      }
+                    }}
+                    className="text-red-500 hover:text-red-600 transition"
+                  >
+                    <Trash size={20} />
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : searched ? (
+        <p className="text-gray-500 mt-6">Nenhum assunto encontrado.</p>
+      ) : null}
     </div>
   );
 };
 
-export default SubjectsPage;
+export default SubjectSearch;
