@@ -24,7 +24,6 @@ class BookController
     #[Inject]
     protected ResponseFactory $response;
 
-    #[GetMapping(path: "books")]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -44,7 +43,6 @@ class BookController
         ]);
     }
 
-    #[GetMapping(path: "books/{id}")]
     public function show(int $id)
     {
         $book = $this->bookService->getBookById($id);
@@ -54,7 +52,6 @@ class BookController
         return $this->response->json(['success' => true, 'data' => $book]);
     }
 
-    #[PostMapping(path: "books")]
     public function store(ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -63,7 +60,6 @@ class BookController
         return $this->response->json(['success' => true, 'data' => $book], 201);
     }
 
-    #[PutMapping(path: "books/{id}")]
     public function update(int $id, ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -76,7 +72,6 @@ class BookController
         return $this->response->json(['success' => true, 'message' => 'Book updated successfully']);
     }
 
-    #[DeleteMapping(path: "books/{id}")]
     public function destroy(int $id)
     {
         $deleted = $this->bookService->deleteBook($id);

@@ -17,23 +17,23 @@ use App\Controller\SubjectController;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
 
-# books
+// author
+Router::get('/authors', [AuthorController::class, 'index']);
+Router::get('/authors/{id}', [AuthorController::class, 'show']);
+Router::post('/authors', [AuthorController::class, 'store']);
+Router::put('/authors/{id}', [AuthorController::class, 'update']);
+Router::delete('/authors/{id}', [AuthorController::class, 'destroy']);
+
+// books
 Router::get('/books', [BookController::class, 'index']);
 Router::get('/books/{id}', [BookController::class, 'show']);
 Router::post('/books', [BookController::class, 'store']);
 Router::put('/books/{id}', [BookController::class, 'update']);
 Router::delete('/books/{id}', [BookController::class, 'destroy']);
 
-# subjects
+// subjects
 Router::get('/subjects', [SubjectController::class, 'index']);
 Router::get('/subjects/{id}', [SubjectController::class, 'show']);
 Router::post('/subjects', [SubjectController::class, 'store']);
 Router::put('/subjects/{id}', [SubjectController::class, 'update']);
 Router::delete('/subjects/{id}', [SubjectController::class, 'destroy']);
-
-# author
-Router::get('/authors', [AuthorController::class, 'index']);
-Router::get('/authors/{id}', [AuthorController::class, 'show']);
-Router::post('/authors', [AuthorController::class, 'store']);
-Router::put('/authors/{id}', [AuthorController::class, 'update']);
-Router::delete('/authors/{id}', [AuthorController::class, 'destroy']);

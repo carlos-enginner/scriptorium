@@ -44,13 +44,13 @@ return [
     };
     function GetQueryString(name) {
       var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-      var r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+      var r = window.location.search.substr(1).match(reg);
       var context = "";
       if (r != null)
         context = decodeURIComponent(r[2]);
       reg = null;
       r = null;
-      return context == null || context == "" || context == "undefined" ? "/http.json" : context;
+      return context == null || context == "" || context == "undefined" ? "http.json" : context;
     }
   </script>
   </body>
@@ -60,5 +60,20 @@ HTML,
   'auto_generate' => true,
   'scan' => [
     'paths' => null,
-  ]
+  ],
+  'server' => [
+    'http' => [
+      'servers' => [
+        [
+          'url' => 'http://localhost:9501',
+          'description' => 'Test Server',
+        ],
+      ],
+      'info' => [
+        'title' => 'Scriptorium API',
+        'description' => 'Esta é a API do Scriptorium utilizando a especificação OpenAPI 3.0',
+        'version' => '1.0.0',
+      ],
+    ],
+  ],
 ];

@@ -26,7 +26,6 @@ class AuthorController
     #[Inject]
     protected ResponseFactory $response;
 
-    #[SA\Get(path: '/author', summary: 'Lista todos os autores ou busca por nome', tags: ['Autores'])]
     #[SA\Parameter(
         name: 'name',
         in: 'query',
@@ -47,14 +46,13 @@ class AuthorController
                             property: 'data',
                             description: 'Lista de autores',
                             type: 'array',
-                            items: new SA\Items(ref: '#/components/schemas/Author')
                         ),
                     ]
                 )
             ),
         ]
     )]
-    #[GetMapping(path: "author")]
+
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -74,7 +72,6 @@ class AuthorController
         ]);
     }
 
-    #[GetMapping(path: "author/{id}")]
     public function show(int $id)
     {
         $author = $this->authorService->getAuthorById($id);
@@ -84,7 +81,6 @@ class AuthorController
         return $this->response->json(['success' => true, 'data' => $author]);
     }
 
-    #[PostMapping(path: "author")]
     public function store(ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -93,7 +89,6 @@ class AuthorController
         return $this->response->json(['success' => true, 'data' => $author], 201);
     }
 
-    #[PutMapping(path: "author/{id}")]
     public function update(int $id, ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -106,7 +101,7 @@ class AuthorController
         return $this->response->json(['success' => true, 'message' => 'Author updated successfully']);
     }
 
-    #[DeleteMapping(path: "author/{id}")]
+    // #[DeleteMapping(path: "/authors/{id}")]
     public function destroy(int $id)
     {
         $deleted = $this->authorService->deleteAuthor($id);

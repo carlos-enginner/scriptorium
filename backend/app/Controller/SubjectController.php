@@ -24,7 +24,6 @@ class SubjectController
     #[Inject]
     protected ResponseFactory $response;
 
-    #[GetMapping(path: "subject")]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -44,7 +43,6 @@ class SubjectController
         ]);
     }
 
-    #[GetMapping(path: "subject/{id}")]
     public function show(int $id)
     {
         $subject = $this->subjectService->getSubjectById($id);
@@ -54,7 +52,6 @@ class SubjectController
         return $this->response->json(['success' => true, 'data' => $subject]);
     }
 
-    #[PostMapping(path: "subject")]
     public function store(ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -63,7 +60,6 @@ class SubjectController
         return $this->response->json(['success' => true, 'data' => $book], 201);
     }
 
-    #[PutMapping(path: "subject/{id}")]
     public function update(int $id, ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -76,7 +72,6 @@ class SubjectController
         return $this->response->json(['success' => true, 'message' => 'Subject updated successfully']);
     }
 
-    #[DeleteMapping(path: "subject/{id}")]
     public function destroy(int $id)
     {
         $deleted = $this->subjectService->deleteSubject($id);
