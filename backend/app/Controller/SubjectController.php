@@ -23,7 +23,7 @@ class SubjectController
     protected ResponseFactory $response;
 
     #[SA\Get(
-        path: '/assuntos',
+        path: '/subjects',
         summary: 'Lista os assuntos',
         description: 'Retorna todos os assuntos ou filtra por descrição se o parâmetro "title" for fornecido',
     )]
@@ -69,7 +69,7 @@ class SubjectController
     }
 
     #[SA\Get(
-        path: '/assuntos/{id}',
+        path: '/subjects/{id}',
         summary: 'Retorna um assunto pelo ID',
         description: 'Retorna as informações de um assunto com base no seu ID',
     )]
@@ -120,7 +120,7 @@ class SubjectController
     }
 
     #[SA\Post(
-        path: '/assuntos',
+        path: '/subjects',
         summary: 'Cria um novo assunto',
         description: 'Adiciona um novo assunto ao sistema',
     )]
@@ -161,7 +161,7 @@ class SubjectController
     }
 
     #[SA\Put(
-        path: '/assuntos/{id}',
+        path: '/subjects/{id}',
         summary: 'Atualiza as informações de um assunto',
         description: 'Atualiza os dados de um assunto existente com base no seu ID',
     )]
@@ -228,7 +228,7 @@ class SubjectController
     }
 
     #[SA\Delete(
-        path: '/assuntos/{id}',
+        path: '/subjects/{id}',
         summary: 'Deleta um assunto pelo ID',
         description: 'Remove um assunto do sistema pelo seu ID',
     )]
