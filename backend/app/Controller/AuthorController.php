@@ -26,6 +26,11 @@ class AuthorController
     #[Inject]
     protected ResponseFactory $response;
 
+    #[SA\Get(
+        path: "/authors",
+        summary: 'Lista os autores',
+        description: 'Retorna uma lista de autores. Permite filtrar pelo nome.',
+    )]
     #[SA\Parameter(
         name: 'name',
         in: 'query',
@@ -72,6 +77,54 @@ class AuthorController
         ]);
     }
 
+    #[SA\Get(
+        path: "/authors/{id}",
+        summary: "Obtém detalhes de um autor",
+        description: "Retorna os detalhes de um autor específico pelo seu ID.",
+    )]
+
+    #[SA\Parameter(
+        name: 'id',
+        in: 'path',
+        description: 'ID do autor a ser buscado',
+        required: true,
+        schema: new SA\Schema(type: 'integer')
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Detalhes do autor',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Dados do autor',
+                            type: 'object',
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    #[SA\Response(
+        response: 404,
+        description: 'Autor não encontrado',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
+                    ]
+                )
+            ),
+        ]
+    )]
+
     public function show(int $id)
     {
         $author = $this->authorService->getAuthorById($id);
@@ -81,6 +134,46 @@ class AuthorController
         return $this->response->json(['success' => true, 'data' => $author]);
     }
 
+    #[SA\Post(
+        path: "/authors",
+        summary: "Cria um novo autor",
+        description: "Adiciona um novo autor ao sistema.",
+    )]
+    #[SA\RequestBody(
+        description: 'Dados para criar um novo autor',
+        required: true,
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    required: ['name'],
+                    properties: [
+                        new SA\Property(property: 'name', description: 'Nome do autor', type: 'string'),
+                    ]
+                )
+            ),
+        ]
+    )]
+    #[SA\Response(
+        response: 201,
+        description: 'Autor criado com sucesso',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Dados do autor criado',
+                            type: 'object',
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+
     public function store(ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -88,6 +181,63 @@ class AuthorController
 
         return $this->response->json(['success' => true, 'data' => $author], 201);
     }
+
+    #[SA\Put(
+        path: "/authors/{id}",
+        summary: "Atualiza um autor",
+        description: "Modifica os dados de um autor existente pelo ID.",
+    )]
+    #[SA\Parameter(
+        name: 'id',
+        in: 'path',
+        description: 'ID do autor a ser atualizado',
+        required: true,
+        schema: new SA\Schema(type: 'integer')
+    )]
+    #[SA\RequestBody(
+        description: 'Dados para atualizar o autor',
+        required: true,
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'name', description: 'Nome do autor', type: 'string'),
+                    ]
+                )
+            ),
+        ]
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Autor atualizado com sucesso',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
+                    ]
+                )
+            ),
+        ]
+    )]
+    #[SA\Response(
+        response: 404,
+        description: 'Autor não encontrado',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
+                    ]
+                )
+            ),
+        ]
+    )]
 
     public function update(int $id, ServerRequestInterface $request)
     {
@@ -101,7 +251,49 @@ class AuthorController
         return $this->response->json(['success' => true, 'message' => 'Author updated successfully']);
     }
 
-    // #[DeleteMapping(path: "/authors/{id}")]
+    #[SA\Delete(
+        path: '/authors/{id}',
+        summary: 'Deleta um autor pelo ID',
+        description: 'Remove um autor do sistema pelo seu ID',
+    )]
+    #[SA\Parameter(
+        name: 'id',
+        in: 'path',
+        description: 'ID do autor a ser deletado',
+        required: true,
+        schema: new SA\Schema(type: 'integer')
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Autor deletado com sucesso',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
+                    ]
+                )
+            ),
+        ]
+    )]
+    #[SA\Response(
+        response: 404,
+        description: 'Autor não encontrado',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
+                    ]
+                )
+            ),
+        ]
+    )]
+
     public function destroy(int $id)
     {
         $deleted = $this->authorService->deleteAuthor($id);
