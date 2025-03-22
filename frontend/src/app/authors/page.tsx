@@ -19,21 +19,39 @@ const AuthorsPage = () => {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Lista de Autores</h2>
-      <Link href="/authors/new" className="bg-blue-500 text-white px-3 py-2 rounded">Novo Autor</Link>
-      <ul className="mt-4">
-        {authors.map((author) => (
-          <li key={author.id} className="border-b py-2 flex justify-between">
-            <span>{author.name}</span>
-            <div>
-              <Link href={`/authors/edit/${author.id}`} className="text-blue-500 mr-2">Editar</Link>
-              <button onClick={() => handleDelete(author.id)} className="text-red-500">Excluir</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
+      <h1 className="text-5xl font-bold text-gray-800 mt-4">Scriptorium</h1>
+      <p className="text-gray-600 mb-6">Gerencie os assuntos cadastrados</p>
+
+      <div className="p-6 max-w-2xl mx-auto border rounded-lg bg-white shadow-md w-full">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold text-gray-800">Lista de Assuntos</h2>
+          <Link href="/subjects/new" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+            Novo Assunto
+          </Link>
+        </div>
+
+        <ul className="divide-y divide-gray-200">
+          {subjects.map((subject) => (
+            <li key={subject.id} className="py-3 flex justify-between items-center">
+              <span className="text-gray-700">{subject.description}</span>
+              <div className="flex gap-2">
+                <Link href={`/subjects/edit/${subject.id}`} className="text-blue-500 hover:underline">
+                  Editar
+                </Link>
+                <button
+                  onClick={() => handleDelete(subject.id)}
+                  className="text-red-500 hover:underline"
+                >
+                  Excluir
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
+
   );
 };
 
