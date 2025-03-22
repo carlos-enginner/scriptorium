@@ -6,6 +6,23 @@ import { Book, createBook, fetchBookById, updateBook, deleteBook } from "@/app/s
 import { fetchAuthors, Author } from "@/app/services/authorService";
 import { fetchSubjects, Subject } from "@/app/services/subjectService";
 import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+
+// Definindo o esquema de validação com Yup
+const validationSchema = Yup.object().shape({
+  title: Yup.string().required("O título é obrigatório").trim().max(40, "O título não pode ter mais de 40 caracteres"),
+  publisher: Yup.string().required("A editora é obrigatória").trim().max(40, "A editora não pode ter mais de 40 caracteres"),
+  edition: Yup.number().required("A edição é obrigatória").min(1, "A edição deve ser maior que 0"),
+  publication_year: Yup.number()
+    .required("O ano de publicação é obrigatório")
+    .min(1000, "Ano de publicação inválido")
+    .max(new Date().getFullYear(), `O ano de publicação não pode ser maior que ${new Date().getFullYear()}`),
+  price: Yup.number().required("O preço é obrigatório").min(0, "O preço não pode ser negativo"),
+  authors: Yup.array().min(1, "Ao menos um autor deve ser selecionado"),
+  subjects: Yup.array().min(1, "Ao menos um assunto deve ser selecionado"),
+});
 
 const BookForm = () => {
   const router = useRouter();
@@ -27,6 +44,10 @@ const BookForm = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [currentYear, setCurrentYear] = useState(Number);
 
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -47,12 +68,11 @@ const BookForm = () => {
     fetchData();
   }, [bookId]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmitForm = async (data: Book) => {
     if (bookId) {
-      await updateBook(bookId, book);
+      await updateBook(bookId, data);
     } else {
-      await createBook(book);
+      await createBook(data);
     }
     router.push("/books");
   };
@@ -77,59 +97,63 @@ const BookForm = () => {
       <h1 className="text-5xl font-bold text-gray-800 mt-4">Scriptorium</h1>
       <p className="text-gray-600 mb-6">{bookId ? "Edite os detalhes do livro" : "Cadastre um novo livro"}</p>
 
-      <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
+      <form onSubmit={handleSubmit(handleSubmitForm)} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
         <input
+          {...register("title")}
           type="text"
           placeholder="Título"
           value={book.title}
           maxLength={40}
           onChange={(e) => setBook({ ...book, title: e.target.value })}
-          className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
-          required
+          className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.title ? 'border-red-500' : ''}`}
         />
+        {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
 
         <input
+          {...register("publisher")}
           type="text"
           placeholder="Editora"
           value={book.publisher}
           maxLength={40}
           onChange={(e) => setBook({ ...book, publisher: e.target.value })}
-          className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
-          required
+          className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.publisher ? 'border-red-500' : ''}`}
         />
+        {errors.publisher && <p className="text-red-500 text-sm">{errors.publisher.message}</p>}
 
         <input
+          {...register("edition")}
           type="number"
           placeholder="Edição"
           min={1}
-          maxLength={10}
           value={book.edition}
           onChange={(e) => setBook({ ...book, edition: Number(e.target.value) })}
-          className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
-          required
+          className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.edition ? 'border-red-500' : ''}`}
         />
+        {errors.edition && <p className="text-red-500 text-sm">{errors.edition.message}</p>}
 
         <input
+          {...register("publication_year")}
           type="number"
           placeholder="Ano de publicação"
           maxLength={4}
           max={currentYear}
           value={book.publication_year || ""}
           onChange={(e) => setBook({ ...book, publication_year: parseInt(e.target.value) || 0 })}
-          className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
-          required
+          className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.publication_year ? 'border-red-500' : ''}`}
         />
+        {errors.publication_year && <p className="text-red-500 text-sm">{errors.publication_year.message}</p>}
 
         <input
+          {...register("price")}
           type="number"
           placeholder="Valor"
           step="0.01"
           value={book.price || ""}
           maxLength={10}
           onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })}
-          className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
-          required
+          className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.price ? 'border-red-500' : ''}`}
         />
+        {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
 
         <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Selecione os autores</h3>
@@ -151,6 +175,7 @@ const BookForm = () => {
             ))}
           </div>
         </div>
+        {errors.authors && <p className="text-red-500 text-sm">{errors.authors.message}</p>}
 
         <div className="border rounded-lg p-4 mb-3 bg-gray-50 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Selecione os assuntos</h3>
@@ -172,6 +197,7 @@ const BookForm = () => {
             ))}
           </div>
         </div>
+        {errors.subjects && <p className="text-red-500 text-sm">{errors.subjects.message}</p>}
 
         <div className="flex gap-3 mt-4">
           <button
@@ -202,7 +228,6 @@ const BookForm = () => {
         </div>
       </form>
     </div>
-
   );
 };
 

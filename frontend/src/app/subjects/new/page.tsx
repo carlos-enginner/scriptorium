@@ -1,16 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { createSubject } from "@/app/services/subjectService";
 import { useRouter } from "next/navigation";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// Defina o esquema de validação com o Yup
+const validationSchema = Yup.object().shape({
+  description: Yup.string().trim()
+    .required("A descrição é obrigatória")
+    .max(40, "A descrição não pode ter mais de 40 caracteres"),
+});
 
 const NewSubjectPage = () => {
-  const [description, setDescription] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await createSubject({ description });
+  // Usando React Hook Form
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const handleFormSubmit = async (data: { description: string }) => {
+    await createSubject({ description: data.description });
     router.push("/subjects");
   };
 
@@ -19,16 +31,17 @@ const NewSubjectPage = () => {
       <h1 className="text-5xl font-bold text-gray-800 mt-4">Scriptorium</h1>
       <p className="text-gray-600 mb-6">Cadastre um novo assunto</p>
 
-      <form onSubmit={handleSubmit} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
         <input
+          {...register("description")}
           type="text"
           placeholder="Descrição do assunto"
-          value={description}
-          maxLength={20}
-          onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200"
-          required
+          maxLength={40}
+          className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.description ? 'border-red-500' : ''}`}
         />
+        {errors.description && (
+          <p className="text-red-500 text-sm">{errors.description.message}</p>
+        )}
 
         <div className="flex gap-3 mt-4">
           <button
@@ -47,7 +60,6 @@ const NewSubjectPage = () => {
         </div>
       </form>
     </div>
-
   );
 };
 
