@@ -25,9 +25,6 @@ const NewAuthorPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
-      <h1 className="text-5xl font-bold text-gray-800 mt-4">Scriptorium</h1>
-      <p className="text-gray-600 mb-6">Cadastre um novo autor</p>
-
       <form onSubmit={handleSubmit(handleFormSubmit)} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
         <input
           {...register("name")}

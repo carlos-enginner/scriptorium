@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Book, createBook, fetchBookById, updateBook } from "@/app/services/bookService";
+import { Book, createBook, fetchBookById } from "@/app/services/bookService";
 import { fetchAuthors, Author } from "@/app/services/authorService";
 import { fetchSubjects, Subject } from "@/app/services/subjectService";
 import { useRouter } from "next/navigation";
@@ -70,7 +70,6 @@ const BookForm = ({ bookId }: BookFormProps) => {
       fetchBookById(bookId).then((bookData) => {
         setBook(bookData);
 
-        // Definir valores no formulário com setValue
         setValue("title", bookData.title);
         setValue("publisher", bookData.publisher);
         setValue("edition", bookData.edition);
@@ -102,9 +101,6 @@ const BookForm = ({ bookId }: BookFormProps) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
-      <h1 className="text-5xl font-bold text-gray-800 mt-4">Scriptorium</h1>
-      <p className="text-gray-600 mb-6">{bookId ? "Edite os detalhes do livro" : "Cadastre um novo livro"}</p>
-
       <form onSubmit={handleSubmit(onSubmit)} className="p-6 max-w-lg mx-auto border rounded-lg bg-white shadow-md w-full">
         <input
           {...register("title")}
