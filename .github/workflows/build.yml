@@ -3,9 +3,8 @@ on:
   push:
     branches:
       - main
-      - scriptorium
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [synchronize]
 jobs:
   sonarqube:
     name: SonarQube
