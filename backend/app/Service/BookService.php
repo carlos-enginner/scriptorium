@@ -41,25 +41,33 @@ class BookService
 
     public function createBook(array $data)
     {
-        $book = $this->bookRepository->create($data);
+        try {
+            $book = $this->bookRepository->create($data);
 
-        if (!empty($data['authors'])) {
-            $this->bookAuthorRepository->upsert($book->id, $data["authors"]);
+            if (!empty($data['authors'])) {
+                $this->bookAuthorRepository->upsert($book->id, $data["authors"]);
+            }
+
+            if (!empty($data['subjects'])) {
+                $this->bookSubjectRepository->upsert($book->id, $data["subjects"]);
+            }
+            return $book;
+        } catch (Throwable $e) {
+            throw new LogicException($e->getMessage());
         }
-
-        if (!empty($data['subjects'])) {
-            $this->bookSubjectRepository->upsert($book->id, $data["subjects"]);
-        }
-
-        return $book;
     }
 
     public function updateBook(int $id, array $data)
     {
         try {
             $update = $this->bookRepository->update($id, $data);
-            $this->bookSubjectRepository->upsert($id, $data["subjects"]);
-            $this->bookAuthorRepository->upsert($id, $data["authors"]);
+            if (!empty($data['authors'])) {
+                $this->bookAuthorRepository->upsert($id, $data["authors"]);
+            }
+
+            if (!empty($data['subjects'])) {
+                $this->bookSubjectRepository->upsert($id, $data["subjects"]);
+            }
             return $update;
         } catch (Throwable $e) {
             throw new LogicException($e->getMessage());

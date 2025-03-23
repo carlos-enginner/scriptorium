@@ -9,6 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 // Definindo o esquema de validação com Yup
 const validationSchema = Yup.object().shape({
@@ -57,7 +58,6 @@ const BookForm = () => {
           setAuthors(await fetchAuthors());
           setSubjects(await fetchSubjects());
           setBook(fetchedBook);
-
           const year = new Date().getFullYear();
           setCurrentYear(year);
         }
@@ -69,18 +69,39 @@ const BookForm = () => {
   }, [bookId]);
 
   const handleSubmitForm = async (data: Book) => {
+
+    const selectedAuthors = Array.from(document.querySelectorAll('input[name="authors"]:checked'))
+      .map(checkbox => checkbox.value);
+
+    const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked'))
+      .map(checkbox => checkbox.value);
+
     if (bookId) {
-      await updateBook(bookId, data);
+      const modifiedData = {
+        ...data,
+        authors: selectedAuthors || [],
+        subjects: selectedSubjects || [],
+      };
+
+      const result = await updateBook(bookId, modifiedData);
+      if (result) {
+        toast.info("Registro atualizado com sucesso");
+      }
     } else {
-      await createBook(data);
+      const result = await createBook(data);
+      if (result) {
+        router.push("/books");
+      }
     }
-    router.push("/books");
+
   };
 
   const handleDelete = async () => {
     if (bookId && confirm("Tem certeza que deseja excluir este livro?")) {
-      await deleteBook(bookId);
-      router.push("/books");
+      const result = await deleteBook(bookId);
+      if (result) {
+        router.push("/books");
+      }
     }
   };
 
@@ -161,13 +182,21 @@ const BookForm = () => {
             {authors.map((author) => (
               <label key={author.id} className="flex items-center gap-2 text-gray-700">
                 <input
+                  name="authors"
                   type="checkbox"
                   checked={book.authors?.includes(author.id)}
+                  value={author.id}
                   onChange={() => {
-                    const selectedAuthors = book.authors?.includes(author.id)
-                      ? book.authors.filter((id) => id !== author.id)
-                      : [...book.authors, author.id];
-                    setBook({ ...book, authors: selectedAuthors });
+                    // Atualiza o estado de autores de forma imutável
+                    setBook((prevBook) => {
+                      const isSelected = prevBook.authors?.includes(author.id);
+                      const updatedAuthors = isSelected
+                        ? prevBook.authors.filter((id) => id !== author.id)
+                        : [...(prevBook.authors || []), author.id];
+
+                      console.log(updatedAuthors);
+                      return { ...prevBook, authors: updatedAuthors };
+                    });
                   }}
                 />
                 {author.name}
@@ -184,7 +213,9 @@ const BookForm = () => {
               <label key={subject.id} className="flex items-center gap-2 text-gray-700">
                 <input
                   type="checkbox"
+                  name="subjects"
                   checked={book.subjects?.includes(subject.id)}
+                  value={subject.id}
                   onChange={() => {
                     const selectedSubjects = book.subjects?.includes(subject.id)
                       ? book.subjects.filter((id) => id !== subject.id)
