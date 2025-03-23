@@ -35,6 +35,7 @@ services:
     container_name: graylog
     volumes:
       - graylog_data:/usr/share/graylog/data
+      - ./backend/infra/graylog/create_stream.sh:/usr/share/graylog/create_stream.sh
     environment:
       - GRAYLOG_USERNAME=admin
       - GRAYLOG_PASSWORD_SECRET=142536142536142536
