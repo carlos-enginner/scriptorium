@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mongodb:
     image: mongo:5
@@ -8,9 +6,9 @@ services:
       - mongo_data:/data/db
     ports:
       - 27017:27017
-    # command: [ "mongod", "--replSet", "rs0", "--bind_ip_all" ]
     networks:
       - webapp-network
+    mem_limit: 1g
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     restart: on-failure
@@ -36,37 +34,31 @@ services:
     image: graylog/graylog:5.0.0
     container_name: graylog
     volumes:
-      - graylog_data:/usr/share/graylog/data # Persisted Graylog data
+      - graylog_data:/usr/share/graylog/data
     environment:
+      - GRAYLOG_USERNAME=admin
       - GRAYLOG_PASSWORD_SECRET=142536142536142536
       - GRAYLOG_ROOT_PASSWORD_SHA2=ad0b4f988b42bf999fcc8ea6aee2ef75df8d11fee8b3625795313b97
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
       - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
       - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog
-    # Command to run as soon as components are started
     entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
-    # Containers that Graylog depends on 
     links:
       - mongodb:mongodb
       - elasticsearch
-    restart: always # Graylog container set to always restart when stopped
+    restart: always
     depends_on:
       - mongodb
       - elasticsearch
     ports:
-      # Graylog web interface and REST API
       - 9000:9000
-      # Syslog TCP
       - 1514:1514
-      # Syslog UDP
       - 1514:1514/udp
-      # GELF TCP
       - 12201:12201
-      # GELF UDP
       - 12201:12201/udp
     networks:
       - webapp-network
-  # Volumes for persisting data, see https://docs.docker.com/engine/admin/volumes/volumes/
+    mem_limit: 1g
 volumes:
   mongo_data:
   es_data:
