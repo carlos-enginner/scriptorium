@@ -1,19 +1,33 @@
-name: Build
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [synchronize]
-jobs:
-  sonarqube:
-    name: SonarQube
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+# name: Build
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     types: [opened, synchronize]
+# jobs:
+#   sonarqube:
+#     name: SonarQube
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+      
+#       - name: Configurar PHP 8.1
+#         uses: shivammathur/setup-php@v2
+#         with:
+#           php-version: "8.1"
+#           extensions: pcov, pdo_pgsql
+#           coverage: pcov
+
+#       - name: Instalar dependências
+#         run: composer install --no-progress --no-suggest --prefer-dist
+
+#       - name: Executar Testes
+#         run: composer test
+
+#       - name: SonarQube Scan
+#         uses: SonarSource/sonarqube-scan-action@v5
+#         env:
+#           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
