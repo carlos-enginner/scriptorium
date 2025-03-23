@@ -13,6 +13,7 @@ services:
       - cache
     command: >
       sh -c "
+        composer install && 
         php /var/www/bin/hyperf.php migrate &&
         php /var/www/bin/hyperf.php start
       "
@@ -70,9 +71,6 @@ networks:
     driver: bridge
 
 volumes:
-  mongo_data:
-  elasticsearch_data:
   postgres_data:
   redis_data:
-  graylog_data:
   graylog_datanode:
