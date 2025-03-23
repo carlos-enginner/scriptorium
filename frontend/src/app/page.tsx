@@ -26,7 +26,7 @@ const Home = () => {
         {menuItems.map(({ label, path, icon }) => (
           <button
             key={path}
-            onClick={() => handleNavigation(path)} // Usando a função handleNavigation
+            onClick={() => handleNavigation(path)}
             className={`w-full flex items-center gap-2 px-4 py-3 rounded-lg text-lg font-medium text-gray-700 hover:bg-gray-200 transition ${activePage === path ? "bg-gray-300" : ""}`}
           >
             {icon} {label}
