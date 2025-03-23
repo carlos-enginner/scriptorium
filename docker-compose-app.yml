@@ -1,0 +1,78 @@
+services:
+  backend:
+    image: hyperf/hyperf:8.1-alpine-v3.18-swoole
+    container_name: scriptorium_backend_app
+    volumes:
+      - ./backend:/var/www
+    working_dir: /var/www
+    ports:
+      - "9501:9501"
+      - "9500:9500"
+    depends_on:
+      - db
+      - cache
+    command: >
+      sh -c "
+        php /var/www/bin/hyperf.php migrate &&
+        php /var/www/bin/hyperf.php start
+      "
+    networks:
+      - scriptorium_network
+
+  frontend:
+    container_name: scriptorium_frontend_app
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /frontend/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - scriptorium_network
+
+  cache:
+    image: redis:latest
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - scriptorium_network
+
+  db:
+    build:
+      context: .
+      dockerfile: ./backend/infra/postgres/Dockerfile
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: scriptorium
+      POSTGRES_USER: scripto
+      POSTGRES_PASSWORD: scripto142536
+      LANG: pt_BR.UTF-8
+      LC_ALL: pt_BR.UTF-8
+      LC_CTYPE: pt_BR.UTF-8
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/pg:/var/lib/postgresql/data
+    networks:
+      - scriptorium_network
+
+networks:
+  scriptorium_network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  elasticsearch_data:
+  postgres_data:
+  redis_data:
+  graylog_data:
+  graylog_datanode:
