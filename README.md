@@ -25,6 +25,7 @@ REDIS_DB=0
 # passo 2 - execute o comando para subir a aplicação backend/frontend
 
 ```
+docker compose -f docker-compose-app.yml build
 docker-compose -f docker-compose-app.yml up -d --remove-orphans
 ```
 

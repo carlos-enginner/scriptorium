@@ -1,6 +1,8 @@
 services:
   backend:
-    image: hyperf/hyperf:8.1-alpine-v3.18-swoole
+    build:
+      context: .
+      dockerfile: ./backend/infra/php/Dockerfile
     container_name: scriptorium_backend_app
     volumes:
       - ./backend:/var/www
