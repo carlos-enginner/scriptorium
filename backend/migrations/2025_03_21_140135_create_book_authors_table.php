@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('book_authors', function (Blueprint $table) {
-            $table->foreignId('book_id')->constrained('books');
-            $table->foreignId('author_id')->constrained('authors');
+            $table->foreignId('book_id')->constrained('books')->onDelete('cascade');
+            $table->foreignId('author_id')->constrained('authors')->onDelete('cascade');
             $table->primary(['book_id', 'author_id']);
             $table->timestamps();
         });

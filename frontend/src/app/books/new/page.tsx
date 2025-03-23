@@ -9,6 +9,7 @@ import { Settings } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { NumericFormat } from 'react-number-format';
 
 // Definindo o esquema de validação com Yup
 const validationSchema = Yup.object().shape({
@@ -53,6 +54,11 @@ const BookForm = ({ bookId }: BookFormProps) => {
     resolver: yupResolver(validationSchema),
   });
 
+  const handlePriceChange = (value: any) => {
+    setBook({ ...book, price: value });
+    setValue("price", value);
+  };
+
   useEffect(() => {
     fetchAuthors().then(setAuthors);
     fetchSubjects().then(setSubjects);
@@ -76,8 +82,22 @@ const BookForm = ({ bookId }: BookFormProps) => {
   }, [bookId, setValue]);
 
   const onSubmit = async (data: Book) => {
-    await createBook(data);
-    // router.push("/books");
+    const selectedAuthors = Array.from(document.querySelectorAll('input[name="authors"]:checked'))
+      .map(checkbox => checkbox.value);
+
+    const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked'))
+      .map(checkbox => checkbox.value);
+
+    const modifiedData = {
+      ...data,
+      authors: selectedAuthors || [],
+      subjects: selectedSubjects || [],
+    };
+
+    const result = await createBook(modifiedData);
+    if (result) {
+      router.push("/books")
+    }
   };
 
   return (
@@ -127,13 +147,19 @@ const BookForm = ({ bookId }: BookFormProps) => {
         />
         {errors.publication_year && <p className="text-red-500 text-sm">{errors.publication_year.message}</p>}
 
-        <input
+        <NumericFormat
           {...register("price")}
-          type="number"
-          placeholder="Valor"
-          step="0.01"
-          value={book.price || 1}
+          id="price"
+          value={book.price}
+          onValueChange={(values) => handlePriceChange(values.floatValue)}
+          thousandSeparator="."
+          decimalSeparator=","
+          allowNegative={false}
+          decimalScale={2}
+          prefix="R$ "
+          fixedDecimalScale
           className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.price ? 'border-red-500' : ''}`}
+          placeholder="Digite o valor"
         />
         {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
 
@@ -153,15 +179,11 @@ const BookForm = ({ bookId }: BookFormProps) => {
             {authors.map((author) => (
               <label key={author.id} className="flex items-center gap-2 text-gray-700">
                 <input
+                  name="authors"
                   type="checkbox"
+                  value={author.id}
                   checked={book.authors?.includes(author.id) ?? false}
                   onChange={() => {
-                    const selectedAuthors = book.authors.includes(author.id)
-                      ? book.authors.filter((id) => id !== author.id)  // Remove o autor
-                      : [...book.authors, author.id];  // Adiciona o autor
-
-                    console.log(selectedAuthors)
-
                     setBook(book => ({
                       ...book,
                       authors: [1],
@@ -191,7 +213,9 @@ const BookForm = ({ bookId }: BookFormProps) => {
             {subjects.map((subject) => (
               <label key={subject.id} className="flex items-center gap-2 text-gray-700">
                 <input
+                  name="subjects"
                   type="checkbox"
+                  value={subject.id}
                   checked={book.subjects?.includes(subject.id) ?? false}
                   onChange={() => {
                     const selectedSubjects = book.subjects?.includes(subject.id)

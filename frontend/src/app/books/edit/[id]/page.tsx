@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { NumericFormat } from 'react-number-format';
+
 
 // Definindo o esquema de validação com Yup
 const validationSchema = Yup.object().shape({
@@ -45,9 +47,14 @@ const BookForm = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [currentYear, setCurrentYear] = useState(Number);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(validationSchema),
   });
+
+  const handlePriceChange = (value: any) => {
+    setBook({ ...book, price: value });
+    setValue("price", value);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +65,7 @@ const BookForm = () => {
           setAuthors(await fetchAuthors());
           setSubjects(await fetchSubjects());
           setBook(fetchedBook);
+          setValue("price", fetchedBook.price);
           const year = new Date().getFullYear();
           setCurrentYear(year);
         }
@@ -86,11 +94,6 @@ const BookForm = () => {
       const result = await updateBook(bookId, modifiedData);
       if (result) {
         toast.info("Registro atualizado com sucesso");
-      }
-    } else {
-      const result = await createBook(data);
-      if (result) {
-        router.push("/books");
       }
     }
 
@@ -164,15 +167,19 @@ const BookForm = () => {
         />
         {errors.publication_year && <p className="text-red-500 text-sm">{errors.publication_year.message}</p>}
 
-        <input
+        <NumericFormat
           {...register("price")}
-          type="number"
-          placeholder="Valor"
-          step="0.01"
-          value={book.price || ""}
-          maxLength={10}
-          onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) || 0 })}
+          id="price"
+          value={book.price}
+          onValueChange={(values) => handlePriceChange(values.floatValue)} 
+          thousandSeparator="."
+          decimalSeparator=","
+          allowNegative={false}
+          decimalScale={2}
+          prefix="R$ "
+          fixedDecimalScale
           className={`w-full p-3 border rounded mb-3 text-gray-700 shadow-sm focus:ring focus:ring-blue-200 ${errors.price ? 'border-red-500' : ''}`}
+          placeholder="Digite o valor"
         />
         {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
 
