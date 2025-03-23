@@ -1,0 +1,5 @@
+.qodo
+.git/*
+!.git/hooks/
+/data
+
