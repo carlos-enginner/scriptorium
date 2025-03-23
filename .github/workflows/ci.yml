@@ -27,7 +27,7 @@ jobs:
           coverage: pcov
 
       - name: Install packages
-        run: composer install --no-progress --prefer-dist
+        run: composer install --no-progress --prefer-dist --working-dir=backend
 
       - name: Testing
         run: composer test
