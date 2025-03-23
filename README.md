@@ -27,3 +27,9 @@ REDIS_DB=0
 ```
 docker-compose -f docker-compose-app.yml up -d --remove-orphans
 ```
+
+# passo 3 - execute o comando para subir as aplicações de observabilidade
+
+```
+docker-compose -f docker-compose-devops.yaml up -d --remove-orphans
+```
