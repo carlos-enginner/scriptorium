@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignId('book_id')->constrained('books');
             $table->foreignId('author_id')->constrained('authors');
             $table->primary(['book_id', 'author_id']);
+            $table->timestamps();
         });
     }
 

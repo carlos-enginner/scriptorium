@@ -44,33 +44,22 @@ class BookService
         $book = $this->bookRepository->create($data);
 
         if (!empty($data['authors'])) {
-            foreach ($data['authors'] as $authorId) {
-                $this->bookAuthorRepository->create([
-                    'book_id' => $book->id,
-                    'author_id' => $authorId,
-                ]);
-            }
+            $this->bookAuthorRepository->upsert($book->id, $data["authors"]);
         }
 
         if (!empty($data['subjects'])) {
-            foreach ($data['subjects'] as $subjectId) {
-                $this->bookSubjectRepository->create([
-                    'book_id' => $book->id,
-                    'subject_id' => $subjectId,
-                ]);
-            }
+            $this->bookSubjectRepository->upsert($book->id, $data["subjects"]);
         }
+
+        return $book;
     }
 
     public function updateBook(int $id, array $data)
     {
         try {
             $update = $this->bookRepository->update($id, $data);
-
             $this->bookSubjectRepository->upsert($id, $data["subjects"]);
-
             $this->bookAuthorRepository->upsert($id, $data["authors"]);
-
             return $update;
         } catch (Throwable $e) {
             throw new LogicException($e->getMessage());

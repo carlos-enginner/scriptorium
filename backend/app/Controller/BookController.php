@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Request\BookRequest;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\Di\Annotation\Inject;
 use App\Service\BookService;
@@ -11,6 +12,8 @@ use Psr\Http\Message\ResponseInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use Hyperf\Swagger\Annotation as SA;
+use Hyperf\Validation\ValidationException;
+use Throwable;
 
 #[SA\HyperfServer(name: 'http')]
 #[Controller]
@@ -134,8 +137,12 @@ class BookController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'title', description: 'Título do livro', type: 'string'),
-                        new SA\Property(property: 'author', description: 'Autor do livro', type: 'string'),
-                        new SA\Property(property: 'year', description: 'Ano de publicação', type: 'integer')
+                        new SA\Property(property: 'publisher', description: 'Editora do livro', type: 'string'),
+                        new SA\Property(property: 'edition', description: 'Editora do livro', type: 'integer'),
+                        new SA\Property(property: 'publication_year', description: 'Ano de publicação', type: 'integer'),
+                        new SA\Property(property: 'price', description: 'Preço do livro', type: 'float'),
+                        new SA\Property(property: 'authors', description: 'Autores do livro', type: 'array', items: new SA\Items(type: 'object')),
+                        new SA\Property(property: 'subjects', description: 'Assuntos do livro', type: 'array', items: new SA\Items(type: 'object'))
                     ]
                 )
             ),
@@ -157,12 +164,15 @@ class BookController
         ]
     )]
 
-    public function store(ServerRequestInterface $request)
+    public function store(BookRequest $request)
     {
-        $data = $request->getParsedBody();
-        $book = $this->bookService->createBook($data);
-
-        return $this->response->json(['success' => true, 'data' => $book], 201);
+        try {
+            $data = $request->validated();
+            $book = $this->bookService->createBook($data);
+            return $this->response->json(['success' => true, 'data' => $book], 201);
+        } catch (ValidationException $error) {
+            $this->response->json($error);
+        }
     }
 
     #[SA\Put(
@@ -186,7 +196,8 @@ class BookController
                     properties: [
                         new SA\Property(property: 'title', description: 'Título do livro', type: 'string'),
                         new SA\Property(property: 'author', description: 'Autor do livro', type: 'string'),
-                        new SA\Property(property: 'year', description: 'Ano de publicação', type: 'integer')
+                        new SA\Property(property: 'year', description: 'Ano de publicação', type: 'integer'),
+                        new SA\Property(property: 'price', description: 'Preço do livro', type: 'float')
                     ]
                 )
             ),

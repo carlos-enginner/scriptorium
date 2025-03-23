@@ -77,7 +77,7 @@ const BookForm = ({ bookId }: BookFormProps) => {
 
   const onSubmit = async (data: Book) => {
     await createBook(data);
-    router.push("/books");
+    // router.push("/books");
   };
 
   return (
