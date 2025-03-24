@@ -32,6 +32,7 @@ jobs:
 
       - name: Testing and coverage
         run: composer test && composer cover && cat coverage/junit.xml
+        working-directory: backend
 
       - name: Static analysis
         uses: SonarSource/sonarqube-scan-action@v5

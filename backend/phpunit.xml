@@ -5,7 +5,7 @@
   cacheDirectory=".phpunit.cache" backupStaticProperties="false">
   <testsuites>
     <testsuite name="Tests">
-      <directory suffix="Test.php">./backend/test</directory>
+      <directory suffix="Test.php">./test</directory>
     </testsuite>
   </testsuites>
   <php>
@@ -13,7 +13,7 @@
   </php>
   <source>
     <include>
-      <directory suffix=".php">./backend/app</directory>
+      <directory suffix=".php">./app</directory>
     </include>
   </source>
   <logging>
