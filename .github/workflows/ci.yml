@@ -27,10 +27,12 @@ jobs:
           coverage: pcov
 
       - name: Install packages
-        run: composer install --no-progress --prefer-dist --working-dir=backend
+        run: composer install --no-progress --prefer-dist
+        working-directory: backend
 
       - name: Testing
-        run: composer test -d backend
+        run: composer test
+        working-directory: backend
 
       - name: Static analysis
         uses: SonarSource/sonarqube-scan-action@v5
