@@ -2,14 +2,16 @@
 
 namespace App\Service;
 
-use App\Model\Author;
 use App\Repository\AuthorRepository;
-use Hyperf\Di\Annotation\Inject;
 
 class AuthorService
 {
-    #[Inject]
     protected AuthorRepository $repository;
+
+    public function __construct(AuthorRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
     public function getAllAuthors()
     {

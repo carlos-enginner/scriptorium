@@ -78,8 +78,10 @@
         "post-autoload-dump": [
             "rm -rf runtime/container"
         ],
-        "test": "co-phpunit --prepend test/bootstrap.php --colors=always --log-junit=coverage/junit.xml",
-        "cover": "co-phpunit --prepend test/bootstrap.php --coverage-clover=coverage/clover.xml",
+        "test:unit": "co-phpunit --prepend test/bootstrap.php --colors=always --log-junit=coverage/junit.xml",
+        "cover": "vendor/bin/phpunit --coverage-clover=coverage/clover.xml",
+        "cover:html": "vendor/bin/phpunit --coverage-html=coverage",
+        "cover:clover": "co-phpunit --prepend test/bootstrap.php --coverage-clover=coverage/clover.xml",
         "docs": "php ./bin/hyperf.php gen:swagger",
         "cs-fix": "php-cs-fixer fix $1",
         "analyse": "phpstan analyse --memory-limit 300M",
