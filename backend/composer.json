@@ -78,7 +78,7 @@
         "post-autoload-dump": [
             "rm -rf runtime/container"
         ],
-        "test": "co-phpunit --prepend test/bootstrap.php --colors=always",
+        "test": "co-phpunit --prepend test/bootstrap.php --colors=always --log-junit=coverage/junit.xml",
         "cover": "co-phpunit --prepend test/bootstrap.php --coverage-clover=coverage/clover.xml",
         "docs": "php ./bin/hyperf.php gen:swagger",
         "cs-fix": "php-cs-fixer fix $1",
