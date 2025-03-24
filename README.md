@@ -26,7 +26,7 @@ REDIS_DB=0
 
 # Subindo a aplicação
 ```
-docker-compose -f docker-compose-devops.yaml -f docker-compose-app.yml up -d --remove-orphans
+docker-compose -f docker-compose-app.yml -f docker-compose-devops.yaml up -d --remove-orphans
 ```
 
 # monitorando a aplicação

@@ -7,7 +7,7 @@ services:
     ports:
       - 27017:27017
     networks:
-      - webapp-network
+      - scriptorium_network
     mem_limit: 1g
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
@@ -29,13 +29,13 @@ services:
     ports:
       - 9200:9200
     networks:
-      - webapp-network
+      - scriptorium_network
   graylog:
     image: graylog/graylog:5.0.0
     container_name: graylog
     volumes:
       - graylog_data:/usr/share/graylog/data
-      - ./backend/infra/graylog/create_stream.sh:/usr/share/graylog/create_stream.sh
+      - ./backend/infra/graylog/configure.sh:/usr/share/graylog/configure.sh
     environment:
       - GRAYLOG_USERNAME=admin
       - GRAYLOG_PASSWORD_SECRET=142536142536142536
@@ -55,15 +55,12 @@ services:
       - 9000:9000
       - 1514:1514
       - 1514:1514/udp
-      - 12201:12201
+      - 12201:12201/tcp
       - 12201:12201/udp
     networks:
-      - webapp-network
+      - scriptorium_network
     mem_limit: 1g
 volumes:
   mongo_data:
   es_data:
   graylog_data:
-networks:
-  webapp-network:
-    driver: bridge
