@@ -30,7 +30,7 @@ jobs:
         run: composer install --no-progress --prefer-dist --working-dir=backend
 
       - name: Testing and coverage
-        run: composer test -d backend && composer cover -d backend
+        run: composer test && composer cover
         working-directory: backend
 
       - name: Static analysis
