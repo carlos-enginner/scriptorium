@@ -31,7 +31,7 @@ jobs:
         working-directory: backend
 
       - name: Testing and coverage
-        run: composer test:unit && composer cover
+        run: composer test:unit && composer cover:clover
         working-directory: backend
 
       - name: Static analysis
