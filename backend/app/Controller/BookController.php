@@ -8,11 +8,14 @@ use App\Request\BookRequest;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\Di\Annotation\Inject;
 use App\Service\BookService;
+use App\Service\LoggerService;
 use Psr\Http\Message\ResponseInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use Hyperf\Swagger\Annotation as SA;
 use Hyperf\Validation\ValidationException;
+use LogicException;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 #[SA\HyperfServer(name: 'http')]
@@ -21,6 +24,9 @@ class BookController
 {
     #[Inject]
     protected BookService $bookService;
+
+    #[Inject]
+    private LoggerInterface $logger;
 
     #[Inject]
     protected ResponseFactory $response;
@@ -169,8 +175,10 @@ class BookController
         try {
             $data = $request->validated();
             $book = $this->bookService->createBook($data);
+            $this->logger->info('[BookController::store] - Livro criado com sucesso', ["info" => $book]);
             return $this->response->json(['success' => true, 'data' => $book], 201);
-        } catch (ValidationException $error) {
+        } catch (Throwable $error) {
+            $this->logger->error('[BookController::store]', ["error" => $error]);
             $this->response->json($error);
         }
     }
