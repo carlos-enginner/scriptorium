@@ -1,6 +1,8 @@
-# scriptorium
+# Scriptorium
 
-# passo 1 - adicione o arquivo .env no diretorio raiz do projeto
+# Configurando a aplicação
+
+## passo 1 - adicione o arquivo .env no diretorio raiz do projeto
 
 ```
 APP_NAME=scriptorium
@@ -22,20 +24,20 @@ REDIS_PORT=6379
 REDIS_DB=0
 ```
 
-# passo 2 - execute o comando para subir a aplicação backend/frontend
-
+# Subindo a aplicação
 ```
-docker compose -f docker-compose-app.yml build
-docker-compose -f docker-compose-app.yml up -d --remove-orphans
+docker-compose -f docker-compose-devops.yaml -f docker-compose-app.yml up -d --remove-orphans
 ```
 
-# passo 3 - execute o comando para subir as aplicações de observabilidade
+# monitorando a aplicação
 
-```
-docker-compose -f docker-compose-devops.yaml up -d --remove-orphans
-```
-
-# passo 4 - para acessar o sonarqube do projeto 
+# para acessar o sonarqube da aplicação 
 ```
 https://sonarcloud.io/organizations/carlos-vargas/projects
 ```
+
+# passa acessar o graylog
+http://localhost:9000/streams/
+- clicar em app.scriptorium
+admin
+142536
