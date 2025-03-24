@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Controller\BookController;
-use App\Request\BookRequest;
 use App\Service\BookService;
 use Hyperf\Testing\TestCase;
 use Mockery;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Client\ClientInterface;
 use Faker\Factory as Faker;
 use GuzzleHttp\Psr7\Response;
@@ -18,6 +16,9 @@ use Hyperf\Context\ApplicationContext;
 
 use function Hyperf\Support\now;
 
+/**
+ * @coversDefaultClass \App\Controller\BookController
+ */
 class BookControllerTest extends TestCase
 {
     protected $faker;
@@ -48,7 +49,9 @@ class BookControllerTest extends TestCase
         );
     }
 
-    /** @test */
+    /**
+     * @covers ::store
+     */
     public function testCreateBookSuccess()
     {
         $payload = [
@@ -80,6 +83,9 @@ class BookControllerTest extends TestCase
         return $responseData['data']['id'];
     }
 
+    /**
+     * @coversNothing
+     */
     protected function tearDown(): void
     {
         Mockery::close();
