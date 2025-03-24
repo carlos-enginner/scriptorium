@@ -2,4 +2,4 @@
 .git/*
 !.git/hooks/
 /data
-/backend/coverage/junit.xml
+backend/coverage/
