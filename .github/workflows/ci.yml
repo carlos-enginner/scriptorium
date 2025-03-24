@@ -31,7 +31,7 @@ jobs:
         working-directory: backend
 
       - name: Testing and coverage
-        run: composer test && composer cover && cat coverage/junit.xml
+        run: composer test
         working-directory: backend
 
       - name: Static analysis
