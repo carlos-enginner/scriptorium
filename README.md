@@ -34,3 +34,8 @@ docker-compose -f docker-compose-app.yml up -d --remove-orphans
 ```
 docker-compose -f docker-compose-devops.yaml up -d --remove-orphans
 ```
+
+# passo 4 - para acessar o sonarqube do projeto 
+```
+https://sonarcloud.io/organizations/carlos-vargas/projects
+```
