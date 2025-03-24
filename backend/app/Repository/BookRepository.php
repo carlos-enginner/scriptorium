@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Helper\TsQuery;
 use App\Model\Book;
 
 class BookRepository
@@ -13,7 +14,9 @@ class BookRepository
 
     public function getBooksByTitle(string $title)
     {
-        return Book::whereRaw('title_tsvector @@ to_tsquery(unaccent(?))', [$title])->get();
+        $title = TsQuery::tokenizer($title);
+
+        return Book::whereRaw("title_tsvector @@ to_tsquery(unaccent(?))", [$title])->get();
     }
 
     public function findById(int $id)

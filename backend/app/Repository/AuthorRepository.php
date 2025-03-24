@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Helper\TsQuery;
 use App\Model\Author;
 
 class AuthorRepository
@@ -12,6 +13,8 @@ class AuthorRepository
     }
     public function getAuthorByName(string $author)
     {
+        $author = TsQuery::tokenizer($author);
+
         return Author::whereRaw('name_tsvector @@ to_tsquery(unaccent(?))', [$author])->get();
     }
 

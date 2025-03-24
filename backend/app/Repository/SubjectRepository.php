@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Model\Subject;
+use App\Helper\TsQuery;
 
 class SubjectRepository
 {
@@ -13,7 +14,9 @@ class SubjectRepository
 
     public function getSubjectsByDescription(string $subject)
     {
-        return Subject::whereRaw('description_tsvector @@ to_tsquery(unaccent(?))', [$subject])->get();
+        $subject = TsQuery::tokenizer($subject);
+
+        return Subject::whereRaw("description_tsvector @@ to_tsquery(unaccent(?))", [$subject])->get();
     }
 
     public function findById(int $id)
