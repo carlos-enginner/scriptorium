@@ -39,7 +39,8 @@ return [
                     ],
                 ],
             ],
-            [
+
+            (env('APP_ENV') === 'dev' ? [
                 'class' => GelfHandler::class,
                 'constructor' => [
                     'publisher' => new Publisher(new UdpTransport(env('GRAYLOG_IP', '127.0.0.1') . '', (int) env('GRAYLOG_UDP_PORT', 12201))),
@@ -55,7 +56,7 @@ return [
                         return $message;
                     }
                 ],
-            ],
+            ] : []),
         ],
     ],
 ];
