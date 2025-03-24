@@ -21,9 +21,6 @@ use Monolog\Logger;
 
 use function Hyperf\Support\env;
 
-echo env('GRAYLOG_UDP_PORT');
-echo '' . env('GRAYLOG_IP');
-
 return [
     'default' => [
         'handlers' => [
@@ -54,7 +51,7 @@ return [
                 ],
                 'processors' => [
                     function (Message $message) {
-                        $message->setAdditional('stream', env('GRAYLOG_STREAM_ID')); // Defina a stream desejada
+                        $message->setAdditional('stream', env('GRAYLOG_STREAM_ID'));
                         return $message;
                     }
                 ],
