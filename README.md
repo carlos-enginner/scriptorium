@@ -13,7 +13,7 @@ git clone https://github.com/carlos-enginner/scriptorium.git
 
 ### 🛠 Adicione o arquivo `.env` no diretório raiz do projeto baixado
 
-Crie um arquivo `.env` e insira as seguintes configurações:
+Crie um arquivo `.env` em ./backend e insira as seguintes configurações:
 
 ```env
 APP_NAME=scriptorium
