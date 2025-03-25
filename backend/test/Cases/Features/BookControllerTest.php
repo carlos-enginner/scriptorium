@@ -59,7 +59,7 @@ class BookControllerTest extends TestCase
         $this->controller = new BookController(
             $this->bookService,
             $this->logger,
-            $this->response
+            $this->response,
         );
     }
 

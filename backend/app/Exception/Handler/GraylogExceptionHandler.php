@@ -50,7 +50,7 @@ class GraylogExceptionHandler extends ExceptionHandler
         ]);
 
         return $response->withStatus($statusCode)->withBody(
-            new SwooleStream(json_encode($errorData, JSON_UNESCAPED_UNICODE))
+            new SwooleStream(json_encode($errorData, JSON_UNESCAPED_UNICODE)),
         );
     }
 

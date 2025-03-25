@@ -40,7 +40,7 @@ class AuthorController
         in: 'query',
         description: 'Filtra autores pelo nome',
         required: false,
-        schema: new SA\Schema(type: 'string')
+        schema: new SA\Schema(type: 'string'),
     )]
     #[SA\Response(
         response: 200,
@@ -53,17 +53,17 @@ class AuthorController
                         new SA\Property(
                             property: 'success',
                             description: 'Indica se a operação foi bem-sucedida',
-                            type: 'boolean'
+                            type: 'boolean',
                         ),
                         new SA\Property(
                             property: 'data',
                             description: 'Lista de autores',
                             type: 'array',
                         ),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
@@ -94,7 +94,7 @@ class AuthorController
         in: 'path',
         description: 'ID do autor a ser buscado',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\Response(
         response: 200,
@@ -107,17 +107,17 @@ class AuthorController
                         new SA\Property(
                             property: 'success',
                             description: 'Indica se a operação foi bem-sucedida',
-                            type: 'boolean'
+                            type: 'boolean',
                         ),
                         new SA\Property(
                             property: 'data',
                             description: 'Dados do autor',
                             type: 'object',
                         ),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -130,17 +130,17 @@ class AuthorController
                         new SA\Property(
                             property: 'success',
                             description: 'Indica se a operação foi bem-sucedida',
-                            type: 'boolean'
+                            type: 'boolean',
                         ),
                         new SA\Property(
                             property: 'message',
                             description: 'Mensagem de erro',
-                            type: 'string'
+                            type: 'string',
                         ),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function show(int $id)
     {
@@ -168,12 +168,12 @@ class AuthorController
                         new SA\Property(
                             property: 'name',
                             description: 'Nome do autor',
-                            type: 'string'
+                            type: 'string',
                         ),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 201,
@@ -186,17 +186,17 @@ class AuthorController
                         new SA\Property(
                             property: 'success',
                             description: 'Indica se a operação foi bem-sucedida',
-                            type: 'boolean'
+                            type: 'boolean',
                         ),
                         new SA\Property(
                             property: 'data',
                             description: 'Dados do autor criado',
                             type: 'object',
                         ),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function store(ServerRequestInterface $request)
     {
@@ -216,7 +216,7 @@ class AuthorController
         in: 'path',
         description: 'ID do autor a ser atualizado',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\RequestBody(
         description: 'Dados para atualizar o autor',
@@ -227,10 +227,10 @@ class AuthorController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'name', description: 'Nome do autor', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 200,
@@ -240,12 +240,16 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -255,12 +259,16 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function update(int $id, ServerRequestInterface $request)
     {
@@ -284,7 +292,7 @@ class AuthorController
         in: 'path',
         description: 'ID do autor a ser deletado',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\Response(
         response: 200,
@@ -294,12 +302,16 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -309,12 +321,16 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function destroy(int $id)
     {

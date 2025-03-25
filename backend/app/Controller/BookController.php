@@ -46,7 +46,7 @@ class BookController
         in: 'query',
         description: 'Título do livro para filtrar os resultados',
         required: false,
-        schema: new SA\Schema(type: 'string')
+        schema: new SA\Schema(type: 'string'),
     )]
     #[SA\Response(
         response: 200,
@@ -58,10 +58,10 @@ class BookController
                     properties: [
                         new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
                         new SA\Property(property: 'data', description: 'Lista de livros', type: 'array', items: new SA\Items(type: 'object')),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
@@ -92,7 +92,7 @@ class BookController
         in: 'path',
         description: 'ID do livro a ser retornado',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\Response(
         response: 200,
@@ -102,12 +102,20 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações do livro', type: 'object'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Informações do livro',
+                            type: 'object',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -117,12 +125,20 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function show(int $id)
     {
@@ -145,17 +161,47 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'title', description: 'Título do livro', type: 'string'),
-                        new SA\Property(property: 'publisher', description: 'Editora do livro', type: 'string'),
-                        new SA\Property(property: 'edition', description: 'Editora do livro', type: 'integer'),
-                        new SA\Property(property: 'publication_year', description: 'Ano de publicação', type: 'integer'),
-                        new SA\Property(property: 'price', description: 'Preço do livro', type: 'float'),
-                        new SA\Property(property: 'authors', description: 'Autores do livro', type: 'array', items: new SA\Items(type: 'object')),
-                        new SA\Property(property: 'subjects', description: 'Assuntos do livro', type: 'array', items: new SA\Items(type: 'object')),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'title',
+                            description: 'Título do livro',
+                            type: 'string',
+                        ),
+                        new SA\Property(
+                            property: 'publisher',
+                            description: 'Editora do livro',
+                            type: 'string',
+                        ),
+                        new SA\Property(
+                            property: 'edition',
+                            description: 'Editora do livro',
+                            type: 'integer',
+                        ),
+                        new SA\Property(
+                            property: 'publication_year',
+                            description: 'Ano de publicação',
+                            type: 'integer',
+                        ),
+                        new SA\Property(
+                            property: 'price',
+                            description: 'Preço do livro',
+                            type: 'float',
+                        ),
+                        new SA\Property(
+                            property: 'authors',
+                            description: 'Autores do livro',
+                            type: 'array',
+                            items: new SA\Items(type: 'object'),
+                        ),
+                        new SA\Property(
+                            property: 'subjects',
+                            description: 'Assuntos do livro',
+                            type: 'array',
+                            items: new SA\Items(type: 'object'),
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 201,
@@ -165,12 +211,20 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações do livro criado', type: 'object'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Informações do livro criado',
+                            type: 'object',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function store(BookRequest $request)
     {
@@ -195,7 +249,7 @@ class BookController
         in: 'path',
         description: 'ID do livro a ser atualizado',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\RequestBody(
         description: 'Dados atualizados do livro',
@@ -204,14 +258,18 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'title', description: 'Título do livro', type: 'string'),
+                        new SA\Property(
+                            property: 'title',
+                            description: 'Título do livro',
+                            type: 'string',
+                        ),
                         new SA\Property(property: 'author', description: 'Autor do livro', type: 'string'),
                         new SA\Property(property: 'year', description: 'Ano de publicação', type: 'integer'),
                         new SA\Property(property: 'price', description: 'Preço do livro', type: 'float'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 200,
@@ -221,12 +279,16 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -236,12 +298,16 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function update(int $id, ServerRequestInterface $request)
     {
@@ -265,7 +331,7 @@ class BookController
         in: 'path',
         description: 'ID do livro a ser deletado',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\Response(
         response: 200,
@@ -275,12 +341,16 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -290,12 +360,16 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
                         new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function destroy(int $id)
     {
