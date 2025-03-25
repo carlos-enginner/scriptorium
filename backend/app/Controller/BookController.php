@@ -8,13 +8,10 @@ use App\Request\BookRequest;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\Di\Annotation\Inject;
 use App\Service\BookService;
-use App\Service\LoggerService;
 use Psr\Http\Message\ResponseInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use Hyperf\Swagger\Annotation as SA;
-use Hyperf\Validation\ValidationException;
-use LogicException;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
