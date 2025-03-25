@@ -63,6 +63,8 @@ Acesse a aplicação pelo navegador:
 
 🔗 **[http://localhost:3000/](http://localhost:3000/)**
 
+> ⚠️ **Nota:** O primeiro carregamento pode ser mais lento, pois o ambiente está configurado no modo **dev**.
+
 ![Application](./backend/images/app.png)
 
 ### 📖 Documentação da API (Swagger)
