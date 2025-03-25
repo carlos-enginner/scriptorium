@@ -97,7 +97,8 @@ Para acessar a análise de qualidade do código no **SonarQube**:
 
 🔗 **[SonarCloud](https://sonarcloud.io/organizations/carlos-vargas/projects)**
 
-![SonarQube](./backend/images/sonarqube.png)
+![SonarQube-Overview](./backend/images/sonarqube-overview.png)
+![SonarQube-Overvall](./backend/images/sonarqube-overvall.png)
 
 ---
 
