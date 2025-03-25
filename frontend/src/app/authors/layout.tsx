@@ -5,6 +5,6 @@ export const metadata: Metadata = {
     description: "Encontre e gerencie livros, autores e assuntos.",
 };
 
-export default function BooksLayout({ children }: { children: React.ReactNode }) {
+export default function BooksLayout({ children }: { children: Readonly<React.ReactNode> }) {
     return <>{children}</>;
 }

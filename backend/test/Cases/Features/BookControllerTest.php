@@ -87,7 +87,8 @@ class BookControllerTest extends TestCase
             'subjects' => [1],
         ];
 
-        $mockResponse = new Response(201, [], json_encode([
+        $statusCode = 201;
+        $mockResponse = new Response($statusCode, [], json_encode([
             'data' => array_merge($payload, ['id' => 1, 'created_at' => now(), 'updated_at' => now()]),
         ]));
 
@@ -97,7 +98,7 @@ class BookControllerTest extends TestCase
 
         $response = $this->clientMock->sendRequest(new Request('POST', '/books', [], json_encode($payload)));
 
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame($statusCode, $response->getStatusCode());
 
         $responseData = json_decode((string) $response->getBody(), true);
         $this->assertArrayHasKey('data', $responseData);

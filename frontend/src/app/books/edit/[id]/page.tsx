@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { Book, createBook, fetchBookById, updateBook, deleteBook } from "@/app/services/bookService";
+import { Book, fetchBookById, updateBook, deleteBook } from "@/app/services/bookService";
 import { fetchAuthors, Author } from "@/app/services/authorService";
 import { fetchSubjects, Subject } from "@/app/services/subjectService";
 import { Loader2 } from "lucide-react";
@@ -168,7 +168,7 @@ const BookForm = () => {
           {...register("price")}
           id="price"
           value={book.price}
-          onValueChange={(values) => handlePriceChange(values.floatValue)} 
+          onValueChange={(values) => handlePriceChange(values.floatValue)}
           thousandSeparator="."
           decimalSeparator=","
           allowNegative={false}
@@ -191,14 +191,12 @@ const BookForm = () => {
                   checked={book.authors?.includes(author.id)}
                   value={author.id}
                   onChange={() => {
-                    // Atualiza o estado de autores de forma imutável
                     setBook((prevBook) => {
                       const isSelected = prevBook.authors?.includes(author.id);
                       const updatedAuthors = isSelected
                         ? prevBook.authors.filter((id) => id !== author.id)
                         : [...(prevBook.authors || []), author.id];
 
-                      console.log(updatedAuthors);
                       return { ...prevBook, authors: updatedAuthors };
                     });
                   }}
