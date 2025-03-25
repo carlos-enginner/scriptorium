@@ -45,7 +45,7 @@ Para iniciar os containers da aplicação, execute:
 docker-compose -f docker-compose-app.yml up -d --remove-orphans
 ```
 
-![Containers](images/containers.png)
+![Containers](./backend/images/containers.png)
 
 ---
 
@@ -57,7 +57,7 @@ Acesse a aplicação pelo navegador:
 
 🔗 **[http://localhost:3000/](http://localhost:3000/)**
 
-![Application](images/app.png)
+![Application](./backend/images/app.png)
 
 ### 📖 Documentação da API (Swagger)
 
@@ -65,7 +65,7 @@ A API possui documentação interativa com Swagger:
 
 🔗 **[http://localhost:9500/docs](http://localhost:9500/docs)**
 
-![Swagger UI](images/swagger.png)
+![Swagger UI](./backend/images/swagger.png)
 
 ---
 
@@ -81,7 +81,7 @@ Para acessar os logs da aplicação no **Graylog**:
 - **Login:** `admin`
 - **Senha:** `142536`
 
-![Graylog](images/graylog.png)
+![Graylog](./backend/images/graylog.png)
 
 ### 📈 SonarQube
 
@@ -89,7 +89,7 @@ Para acessar a análise de qualidade do código no **SonarQube**:
 
 🔗 **[SonarCloud](https://sonarcloud.io/organizations/carlos-vargas/projects)**
 
-![SonarQube](images/sonarqube.png)
+![SonarQube](./backend/images/sonarqube.png)
 
 ---
 
@@ -101,7 +101,7 @@ Para acessar a análise de qualidade do código no **SonarQube**:
 - ✅ Testes unitários
 - ✅ Testes de integração
 - ✅ Observabilidade com GELF
-- ✅ Quality gate (integração com SonarQube)
+- ✅ CI/CD via GitHub Actions com Quality Gate integrado com SonarQube Cloud
 - ✅ Documentação da API com Swagger
 
 ---
@@ -132,8 +132,11 @@ Para acessar a análise de qualidade do código no **SonarQube**:
 
 ---
 
-## 🔜 O que ainda falta implementar?
+## 🔜 O que ficou faltando?
 
-- 🔍 **OpenTelemetry** - Instrumentalização da aplicação
-- 🎨 **Melhoria do frontend** - Refatorar a interface
-- 📊 **Criação de relatórios** - Implementar um sistema de relatórios (pendente por falta de tempo)
+- ✅ Instrumentalização da aplicação com OpenTelemetry e Grafana;
+- ✅ Melhorar a identidade visual da interface web;
+- ✅ Criação do relatório;
+- ✅ Ampliar a cobertura dos códigos para backend
+- ✅ Criação da estrutura de testes unitários no frontend;
+- ✅ Aplicar testes E2E com Cypress;

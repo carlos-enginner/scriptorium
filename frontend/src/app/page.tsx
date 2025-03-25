@@ -35,7 +35,7 @@ const Home = () => {
       </aside>
 
       <main className="flex-1 p-6">
-        <iframe src={activePage} className="w-full h-full border-none rounded-lg"></iframe>
+        <iframe src={activePage} className="w-full h-full border-none rounded-lg" title="Conteúdo da página"></iframe>
       </main>
     </div>
   );
