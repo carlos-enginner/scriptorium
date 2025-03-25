@@ -80,16 +80,20 @@ class BookControllerTest extends TestCase
         ];
 
         $statusCode = 201;
-        $mockResponse = new Response($statusCode, [], json_encode([
-            'data' => array_merge(
-                $payload,
-                [
-                    'id' => 1,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ],
-            ),
-        ]));
+        $mockResponse = new Response(
+            $statusCode,
+            [],
+            json_encode([
+                'data' => array_merge(
+                    $payload,
+                    [
+                        'id' => 1,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ],
+                ),
+            ])
+        );
 
         $this->clientMock->shouldReceive('sendRequest')
             ->once()
