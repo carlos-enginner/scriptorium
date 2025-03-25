@@ -18,7 +18,7 @@ use Monolog\Logger;
 
 // Configuração do Publisher para enviar para o Graylog
 $publisher = new Publisher(
-    new UdpTransport('graylog', 12201)  // Substitua pelo IP e a porta do seu Graylog
+    new UdpTransport('graylog', 12201),  // Substitua pelo IP e a porta do seu Graylog
 );
 
 // Criação do Handler com o GELF

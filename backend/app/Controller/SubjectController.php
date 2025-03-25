@@ -40,7 +40,7 @@ class SubjectController
         in: 'query',
         description: 'Descrição do assunto para filtrar os resultados',
         required: false,
-        schema: new SA\Schema(type: 'string')
+        schema: new SA\Schema(type: 'string'),
     )]
     #[SA\Response(
         response: 200,
@@ -50,12 +50,21 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Lista de assuntos', type: 'array', items: new SA\Items(type: 'object')),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Lista de assuntos',
+                            type: 'array',
+                            items: new SA\Items(type: 'object'),
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
@@ -86,7 +95,7 @@ class SubjectController
         in: 'path',
         description: 'ID do assunto a ser retornada',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\Response(
         response: 200,
@@ -96,12 +105,20 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações da matéria', type: 'object'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Informações da matéria',
+                            type: 'object',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -111,12 +128,20 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function show(int $id)
     {
@@ -140,10 +165,10 @@ class SubjectController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'description', description: 'Description', type: 'string'),
-                    ]
-                )
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 201,
@@ -153,12 +178,20 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações da matéria criada', type: 'object'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Informações da matéria criada',
+                            type: 'object',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function store(ServerRequestInterface $request)
     {
@@ -178,7 +211,7 @@ class SubjectController
         in: 'path',
         description: 'ID da assunto a ser atualizado',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\RequestBody(
         description: 'Dados atualizados do subject',
@@ -187,11 +220,15 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'description', description: 'Description', type: 'string'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'description',
+                            description: 'Description',
+                            type: 'string',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 200,
@@ -201,12 +238,20 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de confirmação',
+                            type: 'string',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -216,12 +261,20 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function update(int $id, ServerRequestInterface $request)
     {
@@ -245,7 +298,7 @@ class SubjectController
         in: 'path',
         description: 'ID da matéria a ser deletada',
         required: true,
-        schema: new SA\Schema(type: 'integer')
+        schema: new SA\Schema(type: 'integer'),
     )]
     #[SA\Response(
         response: 200,
@@ -255,12 +308,20 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'message', description: 'Mensagem de confirmação', type: 'string'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de confirmação',
+                            type: 'string',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     #[SA\Response(
         response: 404,
@@ -270,12 +331,20 @@ class SubjectController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
-                    ]
-                )
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string',
+                        ),
+                    ],
+                ),
             ),
-        ]
+        ],
     )]
     public function destroy(int $id)
     {

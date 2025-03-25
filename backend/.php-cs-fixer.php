@@ -22,7 +22,6 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
-        '@PSR12' => true,
         '@Symfony' => true,
         '@DoctrineAnnotation' => true,
         '@PhpCsFixer' => true,
@@ -97,7 +96,12 @@ return (new PhpCsFixer\Config())
         'standardize_not_equals' => true,
         'multiline_comment_opening_closing' => true,
         'single_line_empty_body' => false,
-        'trailing_comma_in_multiline' => true
+        '@PSR12' => true,
+        'array_indentation' => true,
+        'trailing_comma_in_multiline' => ['elements' => ['arrays', 'arguments']],
+        'multiline_whitespace_before_semicolons' => true,
+        'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],
+        'blank_line_after_namespace' => true
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
