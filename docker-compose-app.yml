@@ -114,7 +114,7 @@ services:
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
       - GRAYLOG_WEB_ENDPOINT_URI=http://127.0.0.1:9000/api
       - GRAYLOG_MONGODB_URI=mongodb://mongodb:27017/graylog
-    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
+    entrypoint: /bin/sh -c "/usr/bin/tini -- wait-for-it elasticsearch:9200 -- /docker-entrypoint.sh && /usr/bin/wait-for-it 127.0.0.1:9000 -- /usr/share/graylog/configure.sh"
     links:
       - mongodb:mongodb
       - elasticsearch
