@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 use Hyperf\Database\Migrations\Migration;
 use Hyperf\DbConnection\DB;
 
@@ -19,9 +18,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        $query = "ALTER TABLE public.subjects "
-            . "ALTER COLUMN description TYPE varchar(40) "
-            . "USING description::varchar(40);";
+        $query = 'ALTER TABLE public.subjects '
+            . 'ALTER COLUMN description TYPE varchar(40) '
+            . 'USING description::varchar(40);';
 
         DB::statement($query);
     }
@@ -31,9 +30,9 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        $query = "ALTER TABLE public.subjects "
-            . "ALTER COLUMN description TYPE varchar(20) "
-            . "USING description::varchar(20);";
+        $query = 'ALTER TABLE public.subjects '
+            . 'ALTER COLUMN description TYPE varchar(20) '
+            . 'USING description::varchar(20);';
 
         DB::statement($query);
     }
