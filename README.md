@@ -149,3 +149,9 @@ Para acessar a análise de qualidade do código no **SonarQube**:
 - ✅ Ampliar a cobertura dos códigos para backend
 - ✅ Criação da estrutura de testes unitários no frontend;
 - ✅ Aplicar testes E2E com Cypress;
+
+## 📹 Demonstração
+
+Assista à demonstração completa clicando no link abaixo:
+
+[![Demonstração do Projeto](https://img.youtube.com/vi/a5128c375e0043a1a9707e1a463417e9/maxresdefault.jpg)](https://www.loom.com/share/a5128c375e0043a1a9707e1a463417e9)
