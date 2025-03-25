@@ -180,10 +180,10 @@ const BookForm = ({ bookId }: BookFormProps) => {
                   value={author.id}
                   checked={book.authors?.includes(author.id) ?? false}
                   onChange={() => {
-                    setBook(book => ({
-                      ...book,
-                      authors: [1],
-                    }));
+                    const selectedAuthors = book.authors?.includes(author.id)
+                      ? book.subjects.filter((id) => id !== author.id)
+                      : [...book.authors, author.id];
+                    setBook({ ...book, authors: selectedAuthors });
                   }}
                 />
                 {author.name}
