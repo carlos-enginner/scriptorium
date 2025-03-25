@@ -44,7 +44,7 @@ GRAYLOG_UDP_PORT=12201
 
 ## 🚀 Subindo a aplicação
 
-Para iniciar os containers da aplicação, execute:
+Para iniciar os containers da aplicação, execute no diretório raiz (onde o projeto foi baixado):
 
 ```sh
 docker-compose -f docker-compose-app.yml build --no-cache
