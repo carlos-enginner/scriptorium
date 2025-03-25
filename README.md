@@ -11,7 +11,7 @@ Sistema de gestão de livros
 git clone https://github.com/carlos-enginner/scriptorium.git
 ```
 
-### 🛠 Adicione o arquivo `.env` no diretório raiz do projeto baixado
+### 🛠 Adicione o arquivo `.env` na pasta backend dentro diretório raiz (onde projeto foi baixado)
 
 Insira as seguintes informações em um arquivo `.env` na pasta ./backend
 
