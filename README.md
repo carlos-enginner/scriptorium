@@ -144,7 +144,7 @@ Para acessar a análise de qualidade do código no **SonarQube**:
 
 - ✅ Instrumentalização da aplicação com OpenTelemetry e Grafana;
 - ✅ Melhorar a identidade visual da interface web;
-- ✅ Criação do relatório;
+- ✅ Criação do relatório (embora ainda não tenha sido implementada, outros recursos foram ativados, evidenciando minha competência em aspectos de baixo nível, como o uso do ts_vector para full text search, triggers e etc...).
 - ✅ Ampliar a cobertura dos códigos para backend
 - ✅ Criação da estrutura de testes unitários no frontend;
 - ✅ Aplicar testes E2E com Cypress;
