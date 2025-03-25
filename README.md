@@ -11,7 +11,7 @@ Sistema de gestão de livros
 git clone https://github.com/carlos-enginner/scriptorium.git
 ```
 
-### 🛠 Adicione o arquivo `.env` no diretório raiz do projeto baixado
+### 🛠 Adicione o arquivo `.env` na pasta backend dentro diretório raiz (onde projeto foi baixado)
 
 Insira as seguintes informações em um arquivo `.env` na pasta ./backend
 
@@ -44,7 +44,7 @@ GRAYLOG_UDP_PORT=12201
 
 ## 🚀 Subindo a aplicação
 
-Para iniciar os containers da aplicação, execute:
+Para iniciar os containers da aplicação, execute no diretório raiz (onde o projeto foi baixado):
 
 ```sh
 docker-compose -f docker-compose-app.yml build --no-cache
