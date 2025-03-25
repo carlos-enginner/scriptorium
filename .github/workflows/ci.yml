@@ -34,11 +34,15 @@ jobs:
         run: composer cs-fix
         working-directory: backend
 
-      - name: Testing and coverage
+      - name: Static Analysis
+        run: composer cs-fix
+        working-directory: backend
+
+      - name: Testing and Coverage
         run: composer test:unit && composer cover:clover
         working-directory: backend
 
-      - name: Static analysis
+      - name: Code Quality
         uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
