@@ -109,7 +109,7 @@ Para acessar a análise de qualidade do código no **SonarQube**:
 - ✅ Testes unitários
 - ✅ Testes de integração
 - ✅ Observabilidade com GELF
-- ✅ CI/CD via GitHub Actions com Quality Gate integrado com SonarQube Cloud
+- ✅ CI/CD via **[GitHub Actions](https://github.com/carlos-enginner/scriptorium/actions)** e Quality Gate integrado com SonarQube Cloud.
 - ✅ Documentação da API com Swagger
 
 ---
