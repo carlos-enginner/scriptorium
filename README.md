@@ -6,7 +6,12 @@ Sistema de gestão de livros
 
 ## 📌 Configurando a aplicação
 
-### 🛠 Passo 1 - Adicione o arquivo `.env` no diretório raiz do projeto
+### 🔄 Baixe o projeto
+```sh
+git clone https://github.com/carlos-enginner/scriptorium.git
+```
+
+### 🛠 Adicione o arquivo `.env` no diretório raiz do projeto baixado
 
 Crie um arquivo `.env` e insira as seguintes configurações:
 
@@ -42,6 +47,7 @@ GRAYLOG_UDP_PORT=12201
 Para iniciar os containers da aplicação, execute:
 
 ```sh
+docker-compose -f docker-compose-app.yml build
 docker-compose -f docker-compose-app.yml up -d --remove-orphans
 ```
 

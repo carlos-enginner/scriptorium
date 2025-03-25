@@ -15,8 +15,3 @@ RUN apk update && apk add --no-cache \
 ENV PCOV_ENABLED=1
 
 WORKDIR /var/www
-
-RUN addgroup -S nonroot \
-    && adduser -S nonroot -G nonroot
-
-USER nonroot
