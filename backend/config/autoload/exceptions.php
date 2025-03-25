@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Exception\Handler\GlobalExceptionHandler;
+
 /**
  * This file is part of Hyperf.
  *
@@ -15,7 +17,7 @@ return [
         'http' => [
             Hyperf\HttpServer\Exception\Handler\HttpExceptionHandler::class,
             App\Exception\Handler\AppExceptionHandler::class,
-            App\Exception\GlobalExceptionHandler::class
+            App\Exception\Handler\GraylogExceptionHandler::class
         ],
     ],
 ];
