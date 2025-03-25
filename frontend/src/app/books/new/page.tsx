@@ -87,6 +87,9 @@ const BookForm = ({ bookId }: BookFormProps) => {
     const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked'))
       .map(checkbox => checkbox.value);
 
+      console.log(selectedAuthors);
+      console.log(selectedSubjects);
+
     const modifiedData = {
       ...data,
       authors: selectedAuthors || [],

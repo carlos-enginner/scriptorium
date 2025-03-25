@@ -33,10 +33,9 @@ class BookSubjectRepository
 
     public function upsert(int $bookId, array $subjects)
     {
-        // remove se não existir na tabela api
         $items = [];
         foreach ($subjects as $subjectId) {
-            if ($this->subjectRepository->findById($subjectId)) {
+            if ($this->subjectRepository->findById((int)$subjectId)) {
                 $items[] = $subjectId;
             }
         }
@@ -44,7 +43,7 @@ class BookSubjectRepository
         Db::table('book_subjects')->where('book_id', $bookId)->delete();
 
         if (! empty($items)) {
-            $values = array_map(fn ($subjectId) => "({$bookId}, {$subjectId})", $items);
+            $values = array_map(fn($subjectId) => "({$bookId}, {$subjectId})", $items);
 
             $sql = 'INSERT INTO book_subjects (book_id, subject_id) VALUES '
                 . implode(', ', $values)

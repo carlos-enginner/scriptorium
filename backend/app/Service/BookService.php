@@ -56,6 +56,8 @@ class BookService
         try {
             $book = $this->bookRepository->create($data);
 
+            var_dump($book);
+
             if (! empty($data['authors'])) {
                 $this->bookAuthorRepository->upsert($book->id, $data['authors']);
             }
