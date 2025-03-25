@@ -35,8 +35,6 @@ class BookControllerTest extends TestCase
 
     protected $clientMock;
 
-    private $controller;
-
     private $bookService;
 
     private $logger;
@@ -55,12 +53,6 @@ class BookControllerTest extends TestCase
         $this->bookService = Mockery::mock(BookService::class);
         $this->logger = Mockery::mock(LoggerInterface::class);
         $this->response = Mockery::mock(\Hyperf\HttpServer\Response::class);
-
-        $this->controller = new BookController(
-            $this->bookService,
-            $this->logger,
-            $this->response,
-        );
     }
 
     /**
@@ -89,14 +81,28 @@ class BookControllerTest extends TestCase
 
         $statusCode = 201;
         $mockResponse = new Response($statusCode, [], json_encode([
-            'data' => array_merge($payload, ['id' => 1, 'created_at' => now(), 'updated_at' => now()]),
+            'data' => array_merge(
+                $payload,
+                [
+                    'id' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ],
+            ),
         ]));
 
         $this->clientMock->shouldReceive('sendRequest')
             ->once()
             ->andReturn($mockResponse);
 
-        $response = $this->clientMock->sendRequest(new Request('POST', '/books', [], json_encode($payload)));
+        $response = $this->clientMock->sendRequest(
+            new Request(
+                'POST',
+                '/books',
+                [],
+                json_encode($payload),
+            ),
+        );
 
         $this->assertSame($statusCode, $response->getStatusCode());
 

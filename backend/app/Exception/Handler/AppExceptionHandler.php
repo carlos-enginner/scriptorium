@@ -44,9 +44,20 @@ class AppExceptionHandler extends ExceptionHandler
             'status_code' => $statusCode,
         ]);
 
-        $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));
+        $this->logger->error(
+            sprintf(
+                '%s[%s] in %s',
+                $throwable->getMessage(),
+                $throwable->getLine(),
+                $throwable->getFile(),
+            ),
+        );
         $this->logger->error($throwable->getTraceAsString());
-        return $response->withHeader('Server', 'Hyperf')->withStatus(500)->withBody(new SwooleStream('Internal Server Error.'));
+        return $response->withHeader('Server', 'Hyperf')
+            ->withStatus(500)
+            ->withBody(
+                new SwooleStream('Internal Server Error.'),
+            );
     }
 
     public function isValid(Throwable $throwable): bool

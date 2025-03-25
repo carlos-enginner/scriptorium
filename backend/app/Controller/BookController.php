@@ -56,8 +56,17 @@ class BookController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Lista de livros', type: 'array', items: new SA\Items(type: 'object')),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Lista de livros',
+                            type: 'array',
+                            items: new SA\Items(type: 'object'),
+                        ),
                     ],
                 ),
             ),
