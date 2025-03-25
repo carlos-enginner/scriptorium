@@ -1,32 +1,46 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace Tests\Feature;
 
 use App\Controller\BookController;
 use App\Service\BookService;
+use Faker\Factory as Faker;
+use GuzzleHttp\Psr7\Response;
+use Hyperf\Context\ApplicationContext;
+use Hyperf\HttpMessage\Server\Request;
 use Hyperf\Testing\TestCase;
 use Mockery;
 use Psr\Http\Client\ClientInterface;
-use Faker\Factory as Faker;
-use GuzzleHttp\Psr7\Response;
-use Hyperf\HttpMessage\Server\Request;
-use Hyperf\Context\ApplicationContext;
+use Psr\Log\LoggerInterface;
 
 use function Hyperf\Support\now;
 
 /**
  * @coversDefaultClass \App\Controller\BookController
+ * @internal
  */
 class BookControllerTest extends TestCase
 {
     protected $faker;
+
     protected $clientMock;
 
     private $controller;
+
     private $bookService;
+
     private $logger;
+
     private $response;
 
     protected function setUp(): void
@@ -39,7 +53,7 @@ class BookControllerTest extends TestCase
         $this->container->set(ClientInterface::class, $this->clientMock);
 
         $this->bookService = Mockery::mock(BookService::class);
-        $this->logger = Mockery::mock(\Psr\Log\LoggerInterface::class);
+        $this->logger = Mockery::mock(LoggerInterface::class);
         $this->response = Mockery::mock(\Hyperf\HttpServer\Response::class);
 
         $this->controller = new BookController(
@@ -47,6 +61,15 @@ class BookControllerTest extends TestCase
             $this->logger,
             $this->response
         );
+    }
+
+    /**
+     * @coversNothing
+     */
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
     }
 
     /**
@@ -65,7 +88,7 @@ class BookControllerTest extends TestCase
         ];
 
         $mockResponse = new Response(201, [], json_encode([
-            'data' => array_merge($payload, ['id' => 1, 'created_at' => now(), 'updated_at' => now()])
+            'data' => array_merge($payload, ['id' => 1, 'created_at' => now(), 'updated_at' => now()]),
         ]));
 
         $this->clientMock->shouldReceive('sendRequest')
@@ -81,14 +104,5 @@ class BookControllerTest extends TestCase
         $this->assertIsInt($responseData['data']['id']);
 
         return $responseData['data']['id'];
-    }
-
-    /**
-     * @coversNothing
-     */
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        parent::tearDown();
     }
 }

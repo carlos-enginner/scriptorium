@@ -1,10 +1,19 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace App\Exception\Handler;
 
 use Hyperf\ExceptionHandler\ExceptionHandler;
+use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -41,7 +50,7 @@ class GraylogExceptionHandler extends ExceptionHandler
         ]);
 
         return $response->withStatus($statusCode)->withBody(
-            new \Hyperf\HttpMessage\Stream\SwooleStream(json_encode($errorData, JSON_UNESCAPED_UNICODE))
+            new SwooleStream(json_encode($errorData, JSON_UNESCAPED_UNICODE))
         );
     }
 

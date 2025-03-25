@@ -1,16 +1,24 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace App\Controller;
 
-use Hyperf\HttpServer\Annotation\Controller;
-use Hyperf\Di\Annotation\Inject;
 use App\Service\SubjectService;
-use Psr\Http\Message\ResponseInterface;
+use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
-use Psr\Http\Message\ServerRequestInterface;
 use Hyperf\Swagger\Annotation as SA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 #[SA\HyperfServer(name: 'http')]
 #[Controller]
@@ -43,13 +51,12 @@ class SubjectController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Lista de assuntos', type: 'array', items: new SA\Items(type: 'object'))
+                        new SA\Property(property: 'data', description: 'Lista de assuntos', type: 'array', items: new SA\Items(type: 'object')),
                     ]
                 )
             ),
         ]
     )]
-
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -65,7 +72,7 @@ class SubjectController
 
         return $this->response->json([
             'success' => true,
-            'data' => $books
+            'data' => $books,
         ]);
     }
 
@@ -90,7 +97,7 @@ class SubjectController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações da matéria', type: 'object')
+                        new SA\Property(property: 'data', description: 'Informações da matéria', type: 'object'),
                     ]
                 )
             ),
@@ -111,11 +118,10 @@ class SubjectController
             ),
         ]
     )]
-
     public function show(int $id)
     {
         $subject = $this->subjectService->getSubjectById($id);
-        if (!$subject) {
+        if (! $subject) {
             return $this->response->json(['success' => false, 'message' => 'Subject not found'], 404);
         }
         return $this->response->json(['success' => true, 'data' => $subject]);
@@ -148,13 +154,12 @@ class SubjectController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações da matéria criada', type: 'object')
+                        new SA\Property(property: 'data', description: 'Informações da matéria criada', type: 'object'),
                     ]
                 )
             ),
         ]
     )]
-
     public function store(ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -218,13 +223,12 @@ class SubjectController
             ),
         ]
     )]
-
     public function update(int $id, ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
         $updated = $this->subjectService->updateSubject($id, $data);
 
-        if (!$updated) {
+        if (! $updated) {
             return $this->response->json(['success' => false, 'message' => 'Subject not found'], 404);
         }
 
@@ -273,12 +277,11 @@ class SubjectController
             ),
         ]
     )]
-
     public function destroy(int $id)
     {
         $deleted = $this->subjectService->deleteSubject($id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             return $this->response->json(['success' => false, 'message' => 'Subject not found'], 404);
         }
 

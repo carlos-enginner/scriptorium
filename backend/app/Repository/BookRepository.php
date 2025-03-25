@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace App\Repository;
 
 use App\Helper\TsQuery;
@@ -16,7 +26,7 @@ class BookRepository
     {
         $title = TsQuery::tokenizer($title);
 
-        return Book::whereRaw("title_tsvector @@ to_tsquery(unaccent(?))", [$title])->get();
+        return Book::whereRaw('title_tsvector @@ to_tsquery(unaccent(?))', [$title])->get();
     }
 
     public function findById(int $id)

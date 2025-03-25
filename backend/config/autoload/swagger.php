@@ -10,10 +10,10 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 return [
-  'enable' => true,
-  'port' => 9500,
-  'json_dir' => BASE_PATH . '/runtime/swagger',
-  'html' => <<<'HTML'
+    'enable' => true,
+    'port' => 9500,
+    'json_dir' => BASE_PATH . '/runtime/swagger',
+    'html' => <<<'HTML'
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -56,24 +56,24 @@ return [
   </body>
 </html>
 HTML,
-  'url' => '/docs',
-  'auto_generate' => true,
-  'scan' => [
-    'paths' => null,
-  ],
-  'server' => [
-    'http' => [
-      'servers' => [
-        [
-          'url' => 'http://localhost:9501',
-          'description' => 'Test Server',
-        ],
-      ],
-      'info' => [
-        'title' => 'Scriptorium API',
-        'description' => 'Esta é a API do Scriptorium utilizando a especificação OpenAPI 3.0',
-        'version' => '1.0.0',
-      ],
+    'url' => '/docs',
+    'auto_generate' => true,
+    'scan' => [
+        'paths' => null,
     ],
-  ],
+    'server' => [
+        'http' => [
+            'servers' => [
+                [
+                    'url' => 'http://localhost:9501',
+                    'description' => 'Test Server',
+                ],
+            ],
+            'info' => [
+                'title' => 'Scriptorium API',
+                'description' => 'Esta é a API do Scriptorium utilizando a especificação OpenAPI 3.0',
+                'version' => '1.0.0',
+            ],
+        ],
+    ],
 ];

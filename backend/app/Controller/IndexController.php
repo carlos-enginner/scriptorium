@@ -15,16 +15,14 @@ namespace App\Controller;
 use Hyperf\HttpServer\Annotation\AutoController;
 use OpenApi\Annotations as OA;
 
-
 /**
- * @AutoController()
+ * @AutoController
  * @OA\Info(
  *     title="Minha API Hyperf",
  *     version="1.0",
  *     description="API de exemplo com Swagger"
  * )
  */
-
 class IndexController extends AbstractController
 {
     /**

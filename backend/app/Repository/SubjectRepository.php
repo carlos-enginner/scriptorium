@@ -1,9 +1,19 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace App\Repository;
 
-use App\Model\Subject;
 use App\Helper\TsQuery;
+use App\Model\Subject;
 
 class SubjectRepository
 {
@@ -16,7 +26,7 @@ class SubjectRepository
     {
         $subject = TsQuery::tokenizer($subject);
 
-        return Subject::whereRaw("description_tsvector @@ to_tsquery(unaccent(?))", [$subject])->get();
+        return Subject::whereRaw('description_tsvector @@ to_tsquery(unaccent(?))', [$subject])->get();
     }
 
     public function findById(int $id)

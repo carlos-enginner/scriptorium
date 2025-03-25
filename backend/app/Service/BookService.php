@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace App\Service;
 
 use App\Repository\BookAuthorRepository;
@@ -13,8 +23,10 @@ class BookService
 {
     #[Inject]
     protected BookRepository $bookRepository;
+
     #[Inject]
     protected BookAuthorRepository $bookAuthorRepository;
+
     #[Inject]
     protected BookSubjectRepository $bookSubjectRepository;
 
@@ -44,12 +56,12 @@ class BookService
         try {
             $book = $this->bookRepository->create($data);
 
-            if (!empty($data['authors'])) {
-                $this->bookAuthorRepository->upsert($book->id, $data["authors"]);
+            if (! empty($data['authors'])) {
+                $this->bookAuthorRepository->upsert($book->id, $data['authors']);
             }
 
-            if (!empty($data['subjects'])) {
-                $this->bookSubjectRepository->upsert($book->id, $data["subjects"]);
+            if (! empty($data['subjects'])) {
+                $this->bookSubjectRepository->upsert($book->id, $data['subjects']);
             }
             return $book;
         } catch (Throwable $e) {
@@ -61,12 +73,12 @@ class BookService
     {
         try {
             $update = $this->bookRepository->update($id, $data);
-            if (!empty($data['authors'])) {
-                $this->bookAuthorRepository->upsert($id, $data["authors"]);
+            if (! empty($data['authors'])) {
+                $this->bookAuthorRepository->upsert($id, $data['authors']);
             }
 
-            if (!empty($data['subjects'])) {
-                $this->bookSubjectRepository->upsert($id, $data["subjects"]);
+            if (! empty($data['subjects'])) {
+                $this->bookSubjectRepository->upsert($id, $data['subjects']);
             }
             return $update;
         } catch (Throwable $e) {

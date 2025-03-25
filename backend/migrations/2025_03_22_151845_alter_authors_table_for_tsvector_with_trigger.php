@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 use Hyperf\Database\Migrations\Migration;
 use Hyperf\DbConnection\Db;
 
@@ -7,18 +16,18 @@ class AlterAuthorsTableForTsvectorWithTrigger extends Migration
 {
     public function up()
     {
-        DB::statement('CREATE EXTENSION IF NOT EXISTS "unaccent"');
+        Db::statement('CREATE EXTENSION IF NOT EXISTS "unaccent"');
 
-        DB::statement('ALTER TABLE authors ADD COLUMN name_tsvector tsvector');
+        Db::statement('ALTER TABLE authors ADD COLUMN name_tsvector tsvector');
 
-        DB::statement('CREATE INDEX idx_name_tsvector ON authors USING gin(name_tsvector)');
+        Db::statement('CREATE INDEX idx_name_tsvector ON authors USING gin(name_tsvector)');
 
-        DB::statement('
+        Db::statement('
            UPDATE authors
            SET name_tsvector = to_tsvector(\'portuguese\', name)
        ');
 
-        DB::statement('
+        Db::statement('
            CREATE OR REPLACE FUNCTION update_name_tsvector()
            RETURNS TRIGGER AS $$
            BEGIN
@@ -28,7 +37,7 @@ class AlterAuthorsTableForTsvectorWithTrigger extends Migration
            $$ LANGUAGE plpgsql;
        ');
 
-        DB::statement('
+        Db::statement('
            CREATE TRIGGER trg_update_name_tsvector
            BEFORE INSERT OR UPDATE ON authors
            FOR EACH ROW
@@ -38,9 +47,9 @@ class AlterAuthorsTableForTsvectorWithTrigger extends Migration
 
     public function down()
     {
-        DB::statement('DROP TRIGGER IF EXISTS trg_update_name_tsvector ON authors');
-        DB::statement('DROP FUNCTION IF EXISTS update_name_tsvector');
-        DB::statement('DROP INDEX IF EXISTS idx_name_tsvector');
-        DB::statement('ALTER TABLE authors DROP COLUMN IF EXISTS name_tsvector');
+        Db::statement('DROP TRIGGER IF EXISTS trg_update_name_tsvector ON authors');
+        Db::statement('DROP FUNCTION IF EXISTS update_name_tsvector');
+        Db::statement('DROP INDEX IF EXISTS idx_name_tsvector');
+        Db::statement('ALTER TABLE authors DROP COLUMN IF EXISTS name_tsvector');
     }
 }

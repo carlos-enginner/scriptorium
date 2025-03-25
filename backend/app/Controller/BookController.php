@@ -1,17 +1,25 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace App\Controller;
 
 use App\Request\BookRequest;
-use Hyperf\HttpServer\Annotation\Controller;
-use Hyperf\Di\Annotation\Inject;
 use App\Service\BookService;
-use Psr\Http\Message\ResponseInterface;
+use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
-use Psr\Http\Message\ServerRequestInterface;
 use Hyperf\Swagger\Annotation as SA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -23,10 +31,10 @@ class BookController
     protected BookService $bookService;
 
     #[Inject]
-    private LoggerInterface $logger;
+    protected ResponseFactory $response;
 
     #[Inject]
-    protected ResponseFactory $response;
+    private LoggerInterface $logger;
 
     #[SA\Get(
         path: '/books',
@@ -49,13 +57,12 @@ class BookController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Lista de livros', type: 'array', items: new SA\Items(type: 'object'))
+                        new SA\Property(property: 'data', description: 'Lista de livros', type: 'array', items: new SA\Items(type: 'object')),
                     ]
                 )
             ),
         ]
     )]
-
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -71,7 +78,7 @@ class BookController
 
         return $this->response->json([
             'success' => true,
-            'data' => $books
+            'data' => $books,
         ]);
     }
 
@@ -96,7 +103,7 @@ class BookController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações do livro', type: 'object')
+                        new SA\Property(property: 'data', description: 'Informações do livro', type: 'object'),
                     ]
                 )
             ),
@@ -117,11 +124,10 @@ class BookController
             ),
         ]
     )]
-
     public function show(int $id)
     {
         $book = $this->bookService->getBookById($id);
-        if (!$book) {
+        if (! $book) {
             return $this->response->json(['success' => false, 'message' => 'Book not found'], 404);
         }
         return $this->response->json(['success' => true, 'data' => $book]);
@@ -145,7 +151,7 @@ class BookController
                         new SA\Property(property: 'publication_year', description: 'Ano de publicação', type: 'integer'),
                         new SA\Property(property: 'price', description: 'Preço do livro', type: 'float'),
                         new SA\Property(property: 'authors', description: 'Autores do livro', type: 'array', items: new SA\Items(type: 'object')),
-                        new SA\Property(property: 'subjects', description: 'Assuntos do livro', type: 'array', items: new SA\Items(type: 'object'))
+                        new SA\Property(property: 'subjects', description: 'Assuntos do livro', type: 'array', items: new SA\Items(type: 'object')),
                     ]
                 )
             ),
@@ -160,22 +166,21 @@ class BookController
                 schema: new SA\Schema(
                     properties: [
                         new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'data', description: 'Informações do livro criado', type: 'object')
+                        new SA\Property(property: 'data', description: 'Informações do livro criado', type: 'object'),
                     ]
                 )
             ),
         ]
     )]
-
     public function store(BookRequest $request)
     {
         try {
             $data = $request->validated();
             $book = $this->bookService->createBook($data);
-            $this->logger->info('[BookController::store] - Livro criado com sucesso', ["info" => $book]);
+            $this->logger->info('[BookController::store] - Livro criado com sucesso', ['info' => $book]);
             return $this->response->json(['success' => true, 'data' => $book], 201);
         } catch (Throwable $error) {
-            $this->logger->error('[BookController::store]', ["error" => $error]);
+            $this->logger->error('[BookController::store]', ['error' => $error]);
             $this->response->json($error);
         }
     }
@@ -202,7 +207,7 @@ class BookController
                         new SA\Property(property: 'title', description: 'Título do livro', type: 'string'),
                         new SA\Property(property: 'author', description: 'Autor do livro', type: 'string'),
                         new SA\Property(property: 'year', description: 'Ano de publicação', type: 'integer'),
-                        new SA\Property(property: 'price', description: 'Preço do livro', type: 'float')
+                        new SA\Property(property: 'price', description: 'Preço do livro', type: 'float'),
                     ]
                 )
             ),
@@ -238,13 +243,12 @@ class BookController
             ),
         ]
     )]
-
     public function update(int $id, ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
         $updated = $this->bookService->updateBook($id, $data);
 
-        if (!$updated) {
+        if (! $updated) {
             return $this->response->json(['success' => false, 'message' => 'Book not found'], 404);
         }
 
@@ -293,12 +297,11 @@ class BookController
             ),
         ]
     )]
-
     public function destroy(int $id)
     {
         $deleted = $this->bookService->deleteBook($id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             return $this->response->json(['success' => false, 'message' => 'Book not found'], 404);
         }
 

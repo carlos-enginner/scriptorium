@@ -30,6 +30,10 @@ jobs:
         run: composer install --no-progress --prefer-dist
         working-directory: backend
 
+      - name: Applying Code Style Pattern
+        run: composer install --no-progress --prefer-dist
+        working-directory: composer cs-fix
+
       - name: Testing and coverage
         run: composer test:unit && composer cover:clover
         working-directory: backend

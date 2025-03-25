@@ -1,16 +1,24 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace App\Controller;
 
 use App\Service\AuthorService;
-use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\Di\Annotation\Inject;
-use Psr\Http\Message\ResponseInterface;
+use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
-use Psr\Http\Message\ServerRequestInterface;
 use Hyperf\Swagger\Annotation as SA;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 #[SA\HyperfServer(name: 'http')]
 #[Controller]
@@ -23,7 +31,7 @@ class AuthorController
     protected ResponseFactory $response;
 
     #[SA\Get(
-        path: "/authors",
+        path: '/authors',
         summary: 'Lista os autores',
         description: 'Retorna uma lista de autores. Permite filtrar pelo nome.',
     )]
@@ -42,7 +50,11 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean'
+                        ),
                         new SA\Property(
                             property: 'data',
                             description: 'Lista de autores',
@@ -53,7 +65,6 @@ class AuthorController
             ),
         ]
     )]
-
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -69,16 +80,15 @@ class AuthorController
 
         return $this->response->json([
             'success' => true,
-            'data' => $authors
+            'data' => $authors,
         ]);
     }
 
     #[SA\Get(
-        path: "/authors/{id}",
-        summary: "Obtém detalhes de um autor",
-        description: "Retorna os detalhes de um autor específico pelo seu ID.",
+        path: '/authors/{id}',
+        summary: 'Obtém detalhes de um autor',
+        description: 'Retorna os detalhes de um autor específico pelo seu ID.',
     )]
-
     #[SA\Parameter(
         name: 'id',
         in: 'path',
@@ -94,7 +104,11 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean'
+                        ),
                         new SA\Property(
                             property: 'data',
                             description: 'Dados do autor',
@@ -113,27 +127,34 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
-                        new SA\Property(property: 'message', description: 'Mensagem de erro', type: 'string'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean'
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string'
+                        ),
                     ]
                 )
             ),
         ]
     )]
-
     public function show(int $id)
     {
         $author = $this->authorService->getAuthorById($id);
-        if (!$author) {
+        if (! $author) {
             return $this->response->json(['success' => false, 'message' => 'Author not found'], 404);
         }
         return $this->response->json(['success' => true, 'data' => $author]);
     }
 
     #[SA\Post(
-        path: "/authors",
-        summary: "Cria um novo autor",
-        description: "Adiciona um novo autor ao sistema.",
+        path: '/authors',
+        summary: 'Cria um novo autor',
+        description: 'Adiciona um novo autor ao sistema.',
     )]
     #[SA\RequestBody(
         description: 'Dados para criar um novo autor',
@@ -144,7 +165,11 @@ class AuthorController
                 schema: new SA\Schema(
                     required: ['name'],
                     properties: [
-                        new SA\Property(property: 'name', description: 'Nome do autor', type: 'string'),
+                        new SA\Property(
+                            property: 'name',
+                            description: 'Nome do autor',
+                            type: 'string'
+                        ),
                     ]
                 )
             ),
@@ -158,7 +183,11 @@ class AuthorController
                 mediaType: 'application/json',
                 schema: new SA\Schema(
                     properties: [
-                        new SA\Property(property: 'success', description: 'Indica se a operação foi bem-sucedida', type: 'boolean'),
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean'
+                        ),
                         new SA\Property(
                             property: 'data',
                             description: 'Dados do autor criado',
@@ -169,7 +198,6 @@ class AuthorController
             ),
         ]
     )]
-
     public function store(ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
@@ -179,9 +207,9 @@ class AuthorController
     }
 
     #[SA\Put(
-        path: "/authors/{id}",
-        summary: "Atualiza um autor",
-        description: "Modifica os dados de um autor existente pelo ID.",
+        path: '/authors/{id}',
+        summary: 'Atualiza um autor',
+        description: 'Modifica os dados de um autor existente pelo ID.',
     )]
     #[SA\Parameter(
         name: 'id',
@@ -234,13 +262,12 @@ class AuthorController
             ),
         ]
     )]
-
     public function update(int $id, ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
         $updated = $this->authorService->updateAuthor($id, $data);
 
-        if (!$updated) {
+        if (! $updated) {
             return $this->response->json(['success' => false, 'message' => 'Author not found'], 404);
         }
 
@@ -289,12 +316,11 @@ class AuthorController
             ),
         ]
     )]
-
     public function destroy(int $id)
     {
         $deleted = $this->authorService->deleteAuthor($id);
 
-        if (!$deleted) {
+        if (! $deleted) {
             return $this->response->json(['success' => false, 'message' => 'Author not found'], 404);
         }
 

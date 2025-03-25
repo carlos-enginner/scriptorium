@@ -1,13 +1,18 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace App\Request;
 
-use Hyperf\Contract\ValidatorInterface;
 use Hyperf\Validation\Request\FormRequest;
-use Hyperf\Validation\ValidationException;
-use Hyperf\Validation\Validator;
 
 class BookRequest extends FormRequest
 {
@@ -39,7 +44,7 @@ class BookRequest extends FormRequest
             'authors' => 'required|array|min:1',
             'authors.*' => 'required|integer|min:1',
             'subjects' => 'required|array|min:1',
-            'subjects.*' => 'required|integer|min:1'
+            'subjects.*' => 'required|integer|min:1',
         ];
     }
 
@@ -73,7 +78,7 @@ class BookRequest extends FormRequest
             'authors.*.required' => 'Cada autor deve ser informado.',
             'authors.*.integer' => 'Cada autor deve ser um número inteiro.',
             'authors.*.min' => 'Cada autor deve ser maior que zero.',
-            
+
             'subjects.required' => 'Os assuntos são obrigatórios.',
             'subjects.array' => 'Os assuntos devem ser fornecidos como um array.',
             'subjects.min' => 'Deve haver pelo menos 1 assunto.',

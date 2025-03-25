@@ -1,21 +1,31 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace Tests\Service;
 
 use App\Model\Author;
-use App\Service\AuthorService;
 use App\Repository\AuthorRepository;
+use App\Service\AuthorService;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \App\Service\AuthorService
+ * @internal
  */
 class AuthorServiceTest extends TestCase
 {
     protected AuthorService $authorService;
+
     protected $authorRepositoryMock;
 
     protected function setUp(): void
@@ -26,6 +36,13 @@ class AuthorServiceTest extends TestCase
 
         $this->authorService = new AuthorService($this->authorRepositoryMock);
     }
+
+    protected function tearDown(): void
+    {
+        Mockery::close();
+        parent::tearDown();
+    }
+
     /**
      * @covers ::getAllAuthors
      */
@@ -43,9 +60,9 @@ class AuthorServiceTest extends TestCase
     /**
      * @covers ::getAuthorByName
      */
-    public function test_get_author_by_name(): void
+    public function testGetAuthorByName(): void
     {
-        $expectedAuthor = new Author(["name" => "Author 1"]);
+        $expectedAuthor = new Author(['name' => 'Author 1']);
         $this->authorRepositoryMock->shouldReceive('getAuthorByName')
             ->once()
             ->with('Author 1')
@@ -53,17 +70,16 @@ class AuthorServiceTest extends TestCase
 
         $excepted = $this->authorService->getAuthorByName('Author 1');
 
-        $this->assertEquals($expectedAuthor["name"], $excepted->name);
+        $this->assertEquals($expectedAuthor['name'], $excepted->name);
     }
 
     /**
      * @covers ::getAuthorByName
      */
-
-    public function test_get_author_by_id_returns_author_when_valid_id_provided(): void
+    public function testGetAuthorByIdReturnsAuthorWhenValidIdProvided(): void
     {
         $authorId = 1;
-        $expectedAuthor = new Author(["id" => $authorId]);
+        $expectedAuthor = new Author(['id' => $authorId]);
 
         $this->authorRepositoryMock->shouldReceive('findById')
             ->once()
@@ -90,11 +106,10 @@ class AuthorServiceTest extends TestCase
         $this->assertEquals(['id' => 1, 'name' => 'Author 1'], $author);
     }
 
-
     /**
      * @covers ::createAuthor
      */
-    public function test_create_author()
+    public function testCreateAuthor()
     {
         $this->authorRepositoryMock->shouldReceive('create')
             ->once()
@@ -134,12 +149,5 @@ class AuthorServiceTest extends TestCase
         $result = $this->authorService->deleteAuthor(1);
 
         $this->assertTrue($result);
-    }
-
-
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        parent::tearDown();
     }
 }

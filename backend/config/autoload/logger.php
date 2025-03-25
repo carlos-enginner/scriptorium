@@ -9,14 +9,13 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-
 use Gelf\Message;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\GelfHandler;
-use Monolog\Formatter\LineFormatter;
 use Gelf\Publisher;
 use Gelf\Transport\UdpTransport;
 use Monolog\Formatter\GelfMessageFormatter;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\GelfHandler;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
 use function Hyperf\Support\env;
@@ -40,7 +39,7 @@ return [
                 ],
             ],
 
-            (env('APP_ENV') === 'dev' ? [
+            env('APP_ENV') === 'dev' ? [
                 'class' => GelfHandler::class,
                 'constructor' => [
                     'publisher' => new Publisher(new UdpTransport(env('GRAYLOG_IP', '127.0.0.1') . '', (int) env('GRAYLOG_UDP_PORT', 12201))),
@@ -54,9 +53,9 @@ return [
                     function (Message $message) {
                         $message->setAdditional('stream', env('GRAYLOG_STREAM_ID'));
                         return $message;
-                    }
+                    },
                 ],
-            ] : []),
+            ] : [],
         ],
     ],
 ];

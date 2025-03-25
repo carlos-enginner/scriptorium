@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
+
 namespace App\Repository;
 
 use App\Model\BookAuthor;
@@ -31,17 +41,16 @@ class BookAuthorRepository
             }
         }
 
-        DB::table('book_authors')->where('book_id', $bookId)->delete();
+        Db::table('book_authors')->where('book_id', $bookId)->delete();
 
-        if (!empty($items)) {
+        if (! empty($items)) {
+            $values = array_map(fn ($authorId) => "({$bookId}, {$authorId})", $items);
 
-            $values = array_map(fn($authorId) => "($bookId, $authorId)", $items);
-
-            $sql = "INSERT INTO book_authors (book_id, author_id) VALUES "
+            $sql = 'INSERT INTO book_authors (book_id, author_id) VALUES '
                 . implode(', ', $values)
-                . " ON CONFLICT (book_id, author_id) DO NOTHING";
+                . ' ON CONFLICT (book_id, author_id) DO NOTHING';
 
-            return DB::statement($sql);
+            return Db::statement($sql);
         }
     }
 

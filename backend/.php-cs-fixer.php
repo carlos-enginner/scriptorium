@@ -22,6 +22,7 @@ return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
+        '@PSR12' => true,
         '@Symfony' => true,
         '@DoctrineAnnotation' => true,
         '@PhpCsFixer' => true,
@@ -57,13 +58,14 @@ return (new PhpCsFixer\Config())
         ],
         'ordered_imports' => [
             'imports_order' => [
-                'class', 'function', 'const',
+                'class',
+                'function',
+                'const',
             ],
             'sort_algorithm' => 'alpha',
         ],
         'single_line_comment_style' => [
-            'comment_types' => [
-            ],
+            'comment_types' => [],
         ],
         'yoda_style' => [
             'always_move_variable' => false,
@@ -95,6 +97,7 @@ return (new PhpCsFixer\Config())
         'standardize_not_equals' => true,
         'multiline_comment_opening_closing' => true,
         'single_line_empty_body' => false,
+        'trailing_comma_in_multiline' => true
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

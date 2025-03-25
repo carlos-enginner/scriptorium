@@ -1,6 +1,14 @@
 <?php
 
 declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 
 namespace Tests\Unit;
 
@@ -9,16 +17,17 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \App\Helper\TsQuery
+ * @internal
  */
 class TsQueryTest extends TestCase
 {
     /**
      * @covers ::tokenizer
      */
-    public function test_tokenizer_happy_path()
+    public function testTokenizerHappyPath()
     {
-        $input = "john doe";
-        $expectedOutput = "john&doe";
+        $input = 'john doe';
+        $expectedOutput = 'john&doe';
 
         $actualOutput = TsQuery::tokenizer($input);
 
@@ -28,10 +37,10 @@ class TsQueryTest extends TestCase
     /**
      * @covers ::tokenizer
      */
-    public function test_tokenizer_edge_case_empty_string()
+    public function testTokenizerEdgeCaseEmptyString()
     {
-        $input = "";
-        $expectedOutput = "";
+        $input = '';
+        $expectedOutput = '';
 
         $actualOutput = TsQuery::tokenizer($input);
 
@@ -41,10 +50,10 @@ class TsQueryTest extends TestCase
     /**
      * @covers ::tokenizer
      */
-    public function test_tokenizer_edge_case_multiple_spaces()
+    public function testTokenizerEdgeCaseMultipleSpaces()
     {
-        $input = "john  doe";
-        $expectedOutput = "john&doe";
+        $input = 'john  doe';
+        $expectedOutput = 'john&doe';
 
         $actualOutput = TsQuery::tokenizer($input);
 
@@ -54,10 +63,10 @@ class TsQueryTest extends TestCase
     /**
      * @covers ::tokenizer
      */
-    public function test_tokenizer_edge_case_single_word()
+    public function testTokenizerEdgeCaseSingleWord()
     {
-        $input = "john";
-        $expectedOutput = "john";
+        $input = 'john';
+        $expectedOutput = 'john';
 
         $actualOutput = TsQuery::tokenizer($input);
 

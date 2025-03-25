@@ -1,5 +1,14 @@
 <?php
 
+declare(strict_types=1);
+/**
+ * This file is part of Hyperf.
+ *
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ */
 use Hyperf\Database\Migrations\Migration;
 use Hyperf\DbConnection\Db;
 
@@ -7,16 +16,16 @@ class AlterSubjectsTableForTsvectorWithTrigger extends Migration
 {
     public function up()
     {
-        DB::statement('ALTER TABLE subjects ADD COLUMN description_tsvector tsvector');
+        Db::statement('ALTER TABLE subjects ADD COLUMN description_tsvector tsvector');
 
-        DB::statement('CREATE INDEX idx_description_tsvector ON subjects USING gin(description_tsvector)');
+        Db::statement('CREATE INDEX idx_description_tsvector ON subjects USING gin(description_tsvector)');
 
-        DB::statement('
+        Db::statement('
             UPDATE subjects
             SET description_tsvector = to_tsvector(\'portuguese\', description)
         ');
 
-        DB::statement('
+        Db::statement('
             CREATE OR REPLACE FUNCTION update_description_tsvector()
             RETURNS TRIGGER AS $$
             BEGIN
@@ -26,7 +35,7 @@ class AlterSubjectsTableForTsvectorWithTrigger extends Migration
             $$ LANGUAGE plpgsql;
         ');
 
-        DB::statement('
+        Db::statement('
             CREATE TRIGGER trg_update_description_tsvector
             BEFORE INSERT OR UPDATE ON subjects
             FOR EACH ROW
@@ -36,9 +45,9 @@ class AlterSubjectsTableForTsvectorWithTrigger extends Migration
 
     public function down()
     {
-        DB::statement('DROP TRIGGER IF EXISTS trg_update_description_tsvector ON subjects');
-        DB::statement('DROP FUNCTION IF EXISTS update_description_tsvector');
-        DB::statement('DROP INDEX IF EXISTS idx_description_tsvector');
-        DB::statement('ALTER TABLE subjects DROP COLUMN IF EXISTS description_tsvector');
+        Db::statement('DROP TRIGGER IF EXISTS trg_update_description_tsvector ON subjects');
+        Db::statement('DROP FUNCTION IF EXISTS update_description_tsvector');
+        Db::statement('DROP INDEX IF EXISTS idx_description_tsvector');
+        Db::statement('ALTER TABLE subjects DROP COLUMN IF EXISTS description_tsvector');
     }
 }
