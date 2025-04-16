@@ -2,8 +2,6 @@
 
 namespace App\Author\Domain\Repository;
 
-// use App\Actor\Domain\Entity\Actor;
-
 interface AuthorRepositoryInterface
 {
     public function getAll(): iterable;
