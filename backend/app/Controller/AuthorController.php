@@ -21,7 +21,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 #[SA\HyperfServer(name: 'http')]
-#[Controller]
+#[SA\Server('v1')]
+#[Controller(prefix: '/v1')]
 class AuthorController
 {
     #[Inject]

@@ -13,6 +13,7 @@ use Hyperf\Swagger\Annotation as SA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+#[SA\Server('v2')]
 #[SA\HyperfServer(name: 'http')]
 #[Controller(prefix: '/v2')]
 class AuthorController

@@ -75,10 +75,10 @@ HTML,
         'version' => '1.0.0',
       ],
     ],
-    'v2' => [
+    'v2' => [ // Novo grupo v2
       'servers' => [
         [
-          'url' => 'http://localhost:9501',
+          'url' => 'http://localhost:9501/v2',
           'description' => 'API Versão 2',
         ],
       ],

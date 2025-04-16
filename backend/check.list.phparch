@@ -5,6 +5,7 @@ check arch
 
 - boas práticas:
 
+- Monolito modular
 - Versionamento da API
 - Aplicação de clean arch na API
 - semanticamente valida
