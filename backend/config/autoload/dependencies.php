@@ -12,4 +12,5 @@ declare(strict_types=1);
 return [
     \App\Author\Domain\Repository\AuthorRepositoryInterface::class => \App\Author\Infra\Repository\AuthorRepository::class,
     \App\Subject\Domain\Repository\SubjectRepositoryInterface::class => \App\Subject\Infra\Repository\SubjectRepository::class,
+    \App\Book\Domain\Repository\BookRepositoryInterface::class => \App\Book\Infra\Repository\BookRepository::class,
 ];
