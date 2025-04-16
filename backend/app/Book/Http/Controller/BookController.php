@@ -6,6 +6,7 @@ use App\Book\UseCase\CreateBookUseCase;
 use App\Book\UseCase\DeleteBookUseCase;
 use App\Book\UseCase\GetAllBookUseCase;
 use App\Book\UseCase\UpdateBookUseCase;
+use App\Request\BookRequest;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Contract\ResponseInterface as ResponseFactory;
@@ -13,6 +14,7 @@ use Hyperf\Swagger\Annotation as SA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 #[SA\Server('v2')]
 #[SA\HyperfServer(name: 'http')]
@@ -240,11 +242,11 @@ class BookController
     {
         try {
             $data = $request->validated();
-            $book = $this->bookService->createBook($data);
-            $this->logger->info('[BookController::store] - Livro criado com sucesso', ['info' => $book]);
+            $book = $this->createBookUseCase->execute($data);
+            // $this->logger->info('[BookController::store] - Livro criado com sucesso', ['info' => $book]);
             return $this->response->json(['success' => true, 'data' => $book], 201);
         } catch (Throwable $error) {
-            $this->logger->error('[BookController::store]', ['error' => $error]);
+            // $this->logger->error('[BookController::store]', ['error' => $error]);
             $this->response->json($error);
         }
     }
