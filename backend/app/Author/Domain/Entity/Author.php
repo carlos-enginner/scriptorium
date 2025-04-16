@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Actor\Domain\Entity;
+namespace App\Author\Domain\Entity;
 
 use Carbon\Carbon;
 
-class Actor
+class Author
 {
     public function __construct(
         public readonly int $id,

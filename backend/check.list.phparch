@@ -1,0 +1,10 @@
+check arch
+1. os arquivos precisams ser scricts
+2. os arquivos de usecase precisa ter um verbo, exemplo: CreateAuthorUseCase
+
+
+- boas práticas:
+
+- Versionamento da API
+- Aplicação de clean arch na API
+- semanticamente valida

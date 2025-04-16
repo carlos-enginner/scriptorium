@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace App\Actor\Infra\Model;
+namespace App\Author\Infra\Model;
 
 use Carbon\Carbon;
 use Hyperf\DbConnection\Model\Model;
@@ -21,7 +21,7 @@ use Hyperf\DbConnection\Model\Model;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
-class ActorModel extends Model
+class AuthorModel extends Model
 {
     /**
      * The table associated with the model.

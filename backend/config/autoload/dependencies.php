@@ -10,5 +10,5 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 return [
-    \App\Actor\Domain\Repository\ActorRepositoryInterface::class => \App\Actor\Infra\Repository\ActorRepository::class,
+    \App\Author\Domain\Repository\AuthorRepositoryInterface::class => \App\Author\Infra\Repository\AuthorRepository::class,
 ];
