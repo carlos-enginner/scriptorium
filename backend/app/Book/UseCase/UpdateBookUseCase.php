@@ -12,6 +12,12 @@ class UpdateBookUseCase
 
     public function execute(int $id, array $data)
     {
-        return $this->bookRepository->update($id, $data);
+        $book = $this->bookRepository->update($id, $data);
+
+        $this->bookRepository->attachAuthors($book->id, $data["authors"]);
+
+        $this->bookRepository->attachSubjects($book->id, $data["subjects"]);
+
+        return $book;
     }
 }

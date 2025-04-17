@@ -9,11 +9,6 @@ interface BookRepositoryInterface
      */
     public function getAll(): iterable;
 
-    // /**
-    //  * Busca um livro pelo ID.
-    //  */
-    // public function findById(int $id);
-
     /**
      * Cria um novo livro.
      */
@@ -28,4 +23,14 @@ interface BookRepositoryInterface
      * Remove um livro pelo ID.
      */
     public function delete(int $id);
+
+    /**
+     * Vincula os authors ao livro
+     */
+    public function attachAuthors(int $bookId, array $authorIds = []);
+
+    /**
+     * Vincula os subjects ao livro
+     */
+    public function attachSubjects(int $bookId, array $subjectIds = []);
 }

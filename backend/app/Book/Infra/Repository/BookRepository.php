@@ -6,6 +6,7 @@ use App\Book\Domain\Entity\Book;
 use App\Book\Domain\Repository\BookRepositoryInterface;
 use App\Book\Infra\Model\BookModel;
 use Carbon\Carbon;
+use Hyperf\DbConnection\Db;
 
 class BookRepository implements BookRepositoryInterface
 {
@@ -49,5 +50,23 @@ class BookRepository implements BookRepositoryInterface
     public function delete(int $id)
     {
         return BookModel::destroy($id);
+    }
+
+    public function attachAuthors(int $bookId, array $authorIds = [])
+    {
+        Db::table('book_authors')->where('book_id', $bookId)->delete();
+
+        $data = array_map(fn($authorId) => ['book_id' => $bookId, 'author_id' => $authorId], $authorIds);
+
+        Db::table('book_authors')->insert($data);
+    }
+
+    public function attachSubjects(int $bookId, array $subjectsIds = [])
+    {
+        Db::table('book_subjects')->where('book_id', $bookId)->delete();
+
+        $data = array_map(fn($subjectId) => ['book_id' => $bookId, 'subject_id' => $subjectId], $subjectsIds);
+
+        Db::table('book_subjects')->insert($data);
     }
 }

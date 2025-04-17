@@ -12,6 +12,12 @@ class CreateBookUseCase
 
     public function execute(array $data)
     {
-        return $this->bookRepository->create($data);
+        $book = $this->bookRepository->create($data);
+
+        $this->bookRepository->attachAuthors($book->id, $data["authors"]);
+
+        $this->bookRepository->attachSubjects($book->id, $data["subjects"]);
+
+        return $book;
     }
 }
