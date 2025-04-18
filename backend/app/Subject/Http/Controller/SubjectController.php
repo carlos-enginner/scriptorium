@@ -35,8 +35,39 @@ class SubjectController
 
     #[SA\Get(
         path: '/v2/subjects',
-        summary: 'Lista os autores',
-        description: 'Retorna uma lista de autores. Permite filtrar pelo nome.',
+        summary: 'Lista os assuntos',
+        description: 'Retorna todos os assuntos ou filtra por descrição se o parâmetro "title" for fornecido',
+    )]
+    #[SA\Parameter(
+        name: 'title',
+        in: 'query',
+        description: 'Descrição do assunto para filtrar os resultados',
+        required: false,
+        schema: new SA\Schema(type: 'string'),
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Lista os assuntos',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Lista de assuntos',
+                            type: 'array',
+                            items: new SA\Items(type: 'object'),
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )]
 
     public function index(ServerRequestInterface $request): ResponseInterface

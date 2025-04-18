@@ -38,17 +38,46 @@ class AuthorController
         summary: 'Lista os autores',
         description: 'Retorna uma lista de autores. Permite filtrar pelo nome.',
     )]
-
+    #[SA\Parameter(
+        name: 'name',
+        in: 'query',
+        description: 'Filtra autores pelo nome',
+        required: false,
+        schema: new SA\Schema(type: 'string'),
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Lista de autores',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Lista de autores',
+                            type: 'array',
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
         $name = $queryParams['name'] ?? null;
 
-        $useCase = $this->getAllAuthorsUseCase->execute();
+        $authors = $this->getAllAuthorsUseCase->execute();
 
         return $this->response->json([
             'success' => true,
-            'data' => $useCase,
+            'data' => $authors,
         ]);
     }
 
