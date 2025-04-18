@@ -5,6 +5,7 @@ namespace App\Subject\Http\Controller;
 use App\Subject\UseCase\CreateSubjectUseCase;
 use App\Subject\UseCase\DeleteSubjectUseCase;
 use App\Subject\UseCase\GetAllSubjectUseCase;
+use App\Subject\UseCase\GetByIdSubjectUseCase;
 use App\Subject\UseCase\UpdateSubjectUseCase;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -23,6 +24,9 @@ class SubjectController
 
     #[Inject]
     protected GetAllSubjectUseCase $getAllSubjectUseCase;
+
+    #[Inject]
+    protected GetByIdSubjectUseCase $getByIdSubjectUseCase;
 
     #[Inject]
     protected CreateSubjectUseCase $createSubjectUseCase;
@@ -69,7 +73,6 @@ class SubjectController
             ),
         ],
     )]
-
     public function index(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -81,6 +84,74 @@ class SubjectController
             'success' => true,
             'data' => $useCase,
         ]);
+    }
+
+
+    #[SA\Get(
+        path: '/v2/subjects/{id}',
+        summary: 'Retorna um assunto pelo ID',
+        description: 'Retorna as informações de um assunto com base no seu ID',
+    )]
+    #[SA\Parameter(
+        name: 'id',
+        in: 'path',
+        description: 'ID do assunto a ser retornada',
+        required: true,
+        schema: new SA\Schema(type: 'integer'),
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Subject found',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Informações da matéria',
+                            type: 'object',
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
+    #[SA\Response(
+        response: 404,
+        description: 'Subject not found',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string',
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
+    public function getById(int $id)
+    {
+        $subject = $this->getByIdSubjectUseCase->execute($id);
+        if (! $subject) {
+            return $this->response->json(['success' => false, 'message' => 'Subject not found'], 404);
+        }
+        return $this->response->json(['success' => true, 'data' => $subject]);
     }
 
 

@@ -2,6 +2,8 @@
 
 namespace App\Subject\Domain\Repository;
 
+use App\Subject\Domain\Entity\Subject;
+
 interface SubjectRepositoryInterface
 {
     public function getAll(): iterable;
@@ -11,10 +13,10 @@ interface SubjectRepositoryInterface
     //  */
     // public function getByName(string $subject);
 
-    // /**
-    //  * Busca um subject pelo ID.
-    //  */
-    // public function findById(int $id);
+    /**
+     * Busca um subject pelo ID.
+     */
+    public function getById(int $id): ?Subject;
 
     /**
      * Cria um novo subject.

@@ -18,6 +18,15 @@ class SubjectRepository implements SubjectRepositoryInterface
             ->all();
     }
 
+    public function getById(int $id): ?Subject
+    {
+        $model = SubjectModel::query()
+            ->where('id', $id)
+            ->first();
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
     private function toEntity(SubjectModel $model): Subject
     {
         return new Subject(
