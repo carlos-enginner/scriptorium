@@ -20,6 +20,15 @@ class BookRepository implements BookRepositoryInterface
             ->all();
     }
 
+    public function getById(int $id): ?Book
+    {
+        $model = BookModel::query()
+            ->where('id', $id)
+            ->first();
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
     private function toEntity(BookModel $model): Book
     {
         return new Book(

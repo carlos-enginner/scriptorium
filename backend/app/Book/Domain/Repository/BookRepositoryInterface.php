@@ -2,6 +2,7 @@
 
 namespace App\Book\Domain\Repository;
 
+use App\Book\Domain\Entity\Book;
 use App\Book\UseCase\DTO\BookDTO;
 
 interface BookRepositoryInterface
@@ -10,6 +11,11 @@ interface BookRepositoryInterface
      * Lista todos os livros.
      */
     public function getAll(): iterable;
+
+    /**
+     * Consulta um livro pelo id.
+     */
+    public function getById(int $id): ?Book;
 
     /**
      * Cria um novo livro.

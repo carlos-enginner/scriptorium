@@ -6,6 +6,7 @@ use App\Book\UseCase\CreateBookUseCase;
 use App\Book\UseCase\DeleteBookUseCase;
 use App\Book\UseCase\DTO\BookDTO;
 use App\Book\UseCase\GetAllBookUseCase;
+use App\Book\UseCase\GetByIdBookUseCase;
 use App\Book\UseCase\UpdateBookUseCase;
 use App\Request\BookRequest;
 use Hyperf\Di\Annotation\Inject;
@@ -30,6 +31,9 @@ class BookController
 
     #[Inject]
     protected GetAllBookUseCase $getAllBookUseCase;
+
+    #[Inject]
+    protected GetByIdBookUseCase $getByIdBookUseCase;
 
     #[Inject]
     protected UpdateBookUseCase $updateBookUseCase;
@@ -95,72 +99,72 @@ class BookController
         ]);
     }
 
-    // #[SA\Get(
-    //     path: '/v2/books/{id}',
-    //     summary: 'Retorna um livro pelo ID',
-    //     description: 'Retorna as informações de um livro com base no seu ID',
-    // )]
-    // #[SA\Parameter(
-    //     name: 'id',
-    //     in: 'path',
-    //     description: 'ID do livro a ser retornado',
-    //     required: true,
-    //     schema: new SA\Schema(type: 'integer'),
-    // )]
-    // #[SA\Response(
-    //     response: 200,
-    //     description: 'Livro encontrado',
-    //     content: [
-    //         new SA\MediaType(
-    //             mediaType: 'application/json',
-    //             schema: new SA\Schema(
-    //                 properties: [
-    //                     new SA\Property(
-    //                         property: 'success',
-    //                         description: 'Indica se a operação foi bem-sucedida',
-    //                         type: 'boolean',
-    //                     ),
-    //                     new SA\Property(
-    //                         property: 'data',
-    //                         description: 'Informações do livro',
-    //                         type: 'object',
-    //                     ),
-    //                 ],
-    //             ),
-    //         ),
-    //     ],
-    // )]
-    // #[SA\Response(
-    //     response: 404,
-    //     description: 'Livro não encontrado',
-    //     content: [
-    //         new SA\MediaType(
-    //             mediaType: 'application/json',
-    //             schema: new SA\Schema(
-    //                 properties: [
-    //                     new SA\Property(
-    //                         property: 'success',
-    //                         description: 'Indica se a operação foi bem-sucedida',
-    //                         type: 'boolean',
-    //                     ),
-    //                     new SA\Property(
-    //                         property: 'message',
-    //                         description: 'Mensagem de erro',
-    //                         type: 'string',
-    //                     ),
-    //                 ],
-    //             ),
-    //         ),
-    //     ],
-    // )]
-    // public function show(int $id)
-    // {
-    //     $book = $this->bookService->getBookById($id);
-    //     if (! $book) {
-    //         return $this->response->json(['success' => false, 'message' => 'Book not found'], 404);
-    //     }
-    //     return $this->response->json(['success' => true, 'data' => $book]);
-    // }
+    #[SA\Get(
+        path: '/v2/books/{id}',
+        summary: 'Retorna um livro pelo ID',
+        description: 'Retorna as informações de um livro com base no seu ID',
+    )]
+    #[SA\Parameter(
+        name: 'id',
+        in: 'path',
+        description: 'ID do livro a ser retornado',
+        required: true,
+        schema: new SA\Schema(type: 'integer'),
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Livro encontrado',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Informações do livro',
+                            type: 'object',
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
+    #[SA\Response(
+        response: 404,
+        description: 'Livro não encontrado',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string',
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
+    public function getById(int $id)
+    {
+        $book = $this->getByIdBookUseCase->execute($id);
+        if (! $book) {
+            return $this->response->json(['success' => false, 'message' => 'Book not found'], 404);
+        }
+        return $this->response->json(['success' => true, 'data' => $book]);
+    }
 
     #[SA\Post(
         path: '/v2/books',
