@@ -2,9 +2,17 @@
 
 namespace App\Author\Domain\Repository;
 
+use App\Author\Domain\Entity\Author;
+
 interface AuthorRepositoryInterface
 {
     public function getAll(): iterable;
+
+    /**
+     * Consulta um autor pelo ID
+     */
+
+    public function getById(int $id): ?Author;
 
     /**
      * Busca autores com base em uma query textual.

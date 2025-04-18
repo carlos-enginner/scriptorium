@@ -19,6 +19,15 @@ class AuthorRepository implements AuthorRepositoryInterface
             ->all();
     }
 
+    public function getById(int $id): ?Author
+    {
+        $model = AuthorModel::query()
+            ->where('id', $id)
+            ->first();
+
+        return $model ? $this->toEntity($model) : null;
+    }
+
     private function toEntity(AuthorModel $model): Author
     {
         return new Author(

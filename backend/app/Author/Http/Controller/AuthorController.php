@@ -5,6 +5,7 @@ namespace App\Author\Http\Controller;
 use App\Author\UseCase\CreateAuthorUseCase;
 use App\Author\UseCase\DeleteAuthorUseCase;
 use App\Author\UseCase\GetAllAuthorUseCase;
+use App\Author\UseCase\GetByIdAuthorUseCase;
 use App\Author\UseCase\UpdateAuthorUseCase;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -23,6 +24,9 @@ class AuthorController
 
     #[Inject]
     protected GetAllAuthorUseCase $getAllAuthorsUseCase;
+
+    #[Inject]
+    protected GetByIdAuthorUseCase $getByIdAuthorsUseCase;
 
     #[Inject]
     protected CreateAuthorUseCase $createAuthorsUseCase;
@@ -79,6 +83,73 @@ class AuthorController
             'success' => true,
             'data' => $authors,
         ]);
+    }
+
+    #[SA\Get(
+        path: '/v2/authors/{id}',
+        summary: 'Obtém detalhes de um autor',
+        description: 'Retorna os detalhes de um autor específico pelo seu ID.',
+    )]
+    #[SA\Parameter(
+        name: 'id',
+        in: 'path',
+        description: 'ID do autor a ser buscado',
+        required: true,
+        schema: new SA\Schema(type: 'integer'),
+    )]
+    #[SA\Response(
+        response: 200,
+        description: 'Detalhes do autor',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'data',
+                            description: 'Dados do autor',
+                            type: 'object',
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
+    #[SA\Response(
+        response: 404,
+        description: 'Autor não encontrado',
+        content: [
+            new SA\MediaType(
+                mediaType: 'application/json',
+                schema: new SA\Schema(
+                    properties: [
+                        new SA\Property(
+                            property: 'success',
+                            description: 'Indica se a operação foi bem-sucedida',
+                            type: 'boolean',
+                        ),
+                        new SA\Property(
+                            property: 'message',
+                            description: 'Mensagem de erro',
+                            type: 'string',
+                        ),
+                    ],
+                ),
+            ),
+        ],
+    )]
+    public function getById(int $id)
+    {
+        $author = $this->getByIdAuthorsUseCase->execute($id);
+        if (! $author) {
+            return $this->response->json(['success' => false, 'message' => 'Author not found'], 404);
+        }
+        return $this->response->json(['success' => true, 'data' => $author]);
     }
 
     #[SA\Post(
