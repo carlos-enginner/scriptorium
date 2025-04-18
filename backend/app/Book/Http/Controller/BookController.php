@@ -4,6 +4,7 @@ namespace App\Book\Http\Controller;
 
 use App\Book\UseCase\CreateBookUseCase;
 use App\Book\UseCase\DeleteBookUseCase;
+use App\Book\UseCase\DTO\BookDTO;
 use App\Book\UseCase\GetAllBookUseCase;
 use App\Book\UseCase\UpdateBookUseCase;
 use App\Request\BookRequest;
@@ -242,7 +243,8 @@ class BookController
     {
         try {
             $data = $request->validated();
-            $book = $this->createBookUseCase->execute($data);
+            $bookDTO = BookDTO::fromArray($data);
+            $book = $this->createBookUseCase->execute($bookDTO);
             // $this->logger->info('[BookController::store] - Livro criado com sucesso', ['info' => $book]);
             return $this->response->json(['success' => true, 'data' => $book], 201);
         } catch (Throwable $error) {
@@ -324,7 +326,8 @@ class BookController
     public function update(int $id, ServerRequestInterface $request)
     {
         $data = $request->getParsedBody();
-        $updated = $this->updateBookUseCase->execute($id, $data);
+        $dto = BookDTO::fromArray($data);
+        $updated = $this->updateBookUseCase->execute($id, $dto);
 
         if (! $updated) {
             return $this->response->json(['success' => false, 'message' => 'Book not found'], 404);

@@ -5,6 +5,7 @@ namespace App\Book\Infra\Repository;
 use App\Book\Domain\Entity\Book;
 use App\Book\Domain\Repository\BookRepositoryInterface;
 use App\Book\Infra\Model\BookModel;
+use App\Book\UseCase\DTO\BookDTO;
 use Carbon\Carbon;
 use Hyperf\DbConnection\Db;
 
@@ -33,16 +34,16 @@ class BookRepository implements BookRepositoryInterface
         );
     }
 
-    public function create(array $data)
+    public function create(BookDTO $dto)
     {
-        return BookModel::create($data);
+        return BookModel::create($dto->toArray());
     }
 
-    public function update(int $id, array $data)
+    public function update(int $id, BookDTO $dto)
     {
         $author = BookModel::find($id);
         if ($author) {
-            $author->update($data);
+            $author->update($dto->toArray());
         }
         return $author;
     }

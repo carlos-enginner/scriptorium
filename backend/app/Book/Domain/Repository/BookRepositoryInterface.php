@@ -2,6 +2,8 @@
 
 namespace App\Book\Domain\Repository;
 
+use App\Book\UseCase\DTO\BookDTO;
+
 interface BookRepositoryInterface
 {
     /**
@@ -12,12 +14,12 @@ interface BookRepositoryInterface
     /**
      * Cria um novo livro.
      */
-    public function create(array $data);
+    public function create(BookDTO $data);
 
     /**
      * Atualiza um livro existente.
      */
-    public function update(int $id, array $data);
+    public function update(int $id, BookDTO $data);
 
     /**
      * Remove um livro pelo ID.
