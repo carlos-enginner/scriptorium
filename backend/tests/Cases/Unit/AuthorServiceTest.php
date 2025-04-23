@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 
-namespace Tests\Service;
+namespace Tests\Cases\Unit;
 
 use App\Model\Author;
 use App\Repository\AuthorRepository;
